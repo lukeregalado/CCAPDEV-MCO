@@ -53,13 +53,13 @@
                     <h3>Login Portal</h3>
                         <form action="#">
                             <div class="input-field">
-                                <input type="email" placeholder="" required>
+                                <input type="email" placeholder="" id="login-email" required>
                                 <label>Email</label>
                                 <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
                             </div>
 
                             <div class="input-field">
-                                <input type="password" placeholder="" required>
+                                <input type="password" placeholder="" id="login-pw" required>
                                 <label>Password</label>
                                 <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
@@ -71,29 +71,42 @@
                         </form>
                 </div>
 
+                <div class="login-form reg-as">
+                    <h3>Register as:</h3>
+                        <div class="reg-as-option" id="reg-as-student" onclick="registerAs('s')">
+                            <img src="images/icons/student.png" alt="STUDENT Group icons created by Freepik - Flaticon">
+                            <p>Student</p>
+                        </div>
+
+                        <div class="reg-as-option" id="reg-as-tech" onclick="registerAs('t')">
+                            <img src="images/icons/technician.png" alt="TECHNICIAN Group icons created by Freepik - Flaticon">
+                            <p>Lab Technician</p>
+                        </div>
+                </div>
+
                 <div class="login-form register">
                     <h3>Registration <br> Portal</h3>
                         <form action="#">
                             <div class="input-field">
-                                <input type="email" placeholder="" required>
+                                <input type="email" placeholder="" id="reg-email" required>
                                 <label>Email</label>
                                 <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
                             </div>
 
                             <div class="input-field">
-                                <input type="password" placeholder="" required>
+                                <input type="password" placeholder="" id="reg-pw" required>
                                 <label>Password</label>
                                 <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
                             
                             <div class="input-field">
-                                <input type="password" placeholder="" required>
+                                <input type="password" placeholder="" id="reg-confirm-pw" required>
                                 <label>Confirm Password</label>
                                 <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
                             <button type="submit" class="btn">Register</button>
                             <div class="login">
-                                <p>Already have an account? <a href="#" class="login-link">Register</a></p>
+                                <p>Already have an account? <a href="#" class="login-link">Login</a></p>
                             </div>
                         </form>
                 </div>

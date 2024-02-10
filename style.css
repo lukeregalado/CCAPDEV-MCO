@@ -219,7 +219,7 @@
     padding: 15px;
     background-color: var(--sidepanel);
     border-bottom-left-radius: 10px;
-    border-top-right-radius: 5px;
+    border-top-right-radius: 15px;
     z-index: 99;
 }
 
@@ -229,7 +229,19 @@
     transform: translateX(0);
 }
 
-.wrap.active .login-form.login {
+.wrap .login-form.reg-as {
+    position: absolute;
+    transition: transform .18s ease;
+    transform: translateX(500px);
+}
+
+.wrap.register-as .login-form.reg-as {
+    position: relative;
+    transform: translateX(0)
+}
+
+.wrap.active .login-form.login,
+.wrap.register-as .login-form.login {
     position: absolute;
     transform: translateX(-500px)
 }
@@ -320,6 +332,7 @@
 }
 
 .wrap .btn:hover{
+    background-color: #009d54;
     box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
 }
 
@@ -343,3 +356,37 @@
     text-decoration: underline;
 }
 
+.reg-as-option {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    height: 75px;
+    border-radius: 20px;
+    outline: none;
+    background-color: var(--sidepanel);
+    padding: 20px;
+    margin: 30px 0 0 22.5px;
+    cursor: pointer;
+    align-items: center;
+
+    transition: .5s;
+}
+
+.reg-as-option:hover {
+    background-color: #009d54;
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
+}
+
+.reg-as-option img {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+}
+
+.reg-as-option p {
+    position: absolute;
+    margin: 0 0 0 100px;
+    color: var(--main);
+    font-weight: bold;
+}
