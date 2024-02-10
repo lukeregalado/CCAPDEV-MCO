@@ -1,3 +1,5 @@
+<!-- <a href="https://www.flaticon.com/free-icons/group" title="group icons"></a> -->
+
 <html>
     <head>
         <title>Lab Reservation System</title>
@@ -5,21 +7,101 @@
     </head>
 
     <body>
-        <div class="side-panel">
-            <div class="icon-cont">
-                <img src="images/clock.png" alt="CLOCK">
+        <div id="my-side-panel" class="side-panel">
+            <div class="main-icon">
+                <img src="images/icons/computer.png" alt="CLOCK Group icons created by Freepik - Flaticon">
             </div>
-            <img src="icon2.png" alt="Icon 2">
-            <img src="icon3.png" alt="Icon 3">
-        </div>
 
+            <div class="side-panel-content" id="calendar-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/calendar.png" alt="CALENDAR Group icons created by Freepik - Flaticon"><p>Calendar</p>
+                </div>
+                <ul>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">View Slot Availability</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="reserve-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
+                </div>
+                <ul>
+                    <li><a href="#">See Reservations</a></li>
+                    <li><a href="#">Make Reservation</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="profile-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/user.png" alt="USER Group icons created by Freepik - Flaticon" class="user-icon"><p>Profile</p>
+                </div>
+                <ul>
+                    <li><a href="#">View Profile</a></li>
+                    <li><a href="#">Delete account</a></li>
+                </ul>
+            </div>
+        </div>
+ 
         <div class="main-content">
+            <div class="header">
+                <button class="login-popup">LOGIN</button>
+            </div>
 
-        </div>
+            <div class="wrap">
+                <img src="images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
 
+                <div class="login-form login">
+                    <h3>Login Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
 
+                            <div class="input-field">
+                                <input type="password" placeholder="" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
 
-        
+                            <button type="submit" class="btn">Login</button>
+                            <div class="register">
+                                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                            </div>
+                        </form>
+                </div>
+
+                <div class="login-form register">
+                    <h3>Registration <br> Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="input-field">
+                                <input type="password" placeholder="" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            
+                            <div class="input-field">
+                                <input type="password" placeholder="" required>
+                                <label>Confirm Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            <button type="submit" class="btn">Register</button>
+                            <div class="login">
+                                <p>Already have an account? <a href="#" class="login-link">Register</a></p>
+                            </div>
+                        </form>
+                </div>
+
+            </div>
+        </div> 
+
+        <script src="script.js"></script>
+
     </body>
-
 </html>

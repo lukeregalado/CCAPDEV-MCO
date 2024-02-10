@@ -1,0 +1,21 @@
+CALENDAR
+- view slot
+- search user / see free slots
+
+RESERVE
+- reserve
+- reserve for students (only for tech)
+- remove reservation
+- edit reservation
+- see reservation
+
+USER
+- register (visitor)
+ > student
+ > lab tech
+- login
+- logout
+- view / edit user profile
+- delete account
+
+14/3 = 4.67 ---> 4-5 pages each
