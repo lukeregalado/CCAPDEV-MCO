@@ -1,3 +1,191 @@
+<!--    REFERENCES
+    - https://codepen.io/azazy/pen/EgdXxG           -> change image feature
+    - https://www.flaticon.com/free-icons/group     -> icons
+-->
+
 <html>
-    
+    <head>
+        <title>Lab Reservation System</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div id="my-side-panel" class="side-panel">
+            <div class="main-icon">
+                <a href="index.html"><img src="images/icons/computer.png" alt="CLOCK Group icons created by Freepik - Flaticon"></a>
+            </div>
+
+            <div class="side-panel-content" id="calendar-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/calendar.png" alt="CALENDAR Group icons created by Freepik - Flaticon"><p>Calendar</p>
+                </div>
+                <ul>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">View Slot Availability</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="reserve-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
+                </div>
+                <ul>
+                    <li><a href="#">See Reservations</a></li>
+                    <li><a href="#">Make Reservation</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="profile-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/user.png" alt="USER Group icons created by Freepik - Flaticon" class="user-icon"><p>Profile</p>
+                </div>
+                <ul>
+                    <li><a href="#">View Profile</a></li>
+                    <li><a href="#">Delete account</a></li>
+                </ul>
+            </div>
+        </div>
+ 
+        <div class="main-content">
+            <div class="header">
+                <button class="login-popup">LOGIN</button>
+            </div>
+
+            <div class="wrap">
+                <img src="images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
+
+                <div class="login-form login">
+                    <h3>Login Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" id="login-email" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="login-pw" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <button type="submit" class="btn">Login</button>
+                            <div class="register">
+                                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                            </div>
+                        </form>
+                </div>
+
+                <div class="login-form reg-as">
+                    <h3>Register as:</h3>
+                        <div class="reg-as-option" id="reg-as-student" onclick="registerAs('s')">
+                            <img src="images/icons/student.png" alt="STUDENT Group icons created by Freepik - Flaticon">
+                            <p>Student</p>
+                        </div>
+
+                        <div class="reg-as-option" id="reg-as-tech" onclick="registerAs('t')">
+                            <img src="images/icons/technician.png" alt="TECHNICIAN Group icons created by Freepik - Flaticon">
+                            <p>Lab Technician</p>
+                        </div>
+                </div>
+
+                <div class="login-form register">
+                    <h3>Registration <br> Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" id="reg-email" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="reg-pw" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="reg-confirm-pw" required>
+                                <label>Confirm Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            <button type="submit" class="btn">Register</button>
+                            <div class="login">
+                                <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+                            </div>
+                        </form>
+                </div>
+            </div>
+
+            <div id="pfp-container">
+                <label class="pfp-label" for="file">
+                    <span>Change Image</span>
+                  </label>
+                  <input id="file" type="file" onchange="loadFile(event)"/>
+                <img id="profile-picture" alt="Profile Picture">
+            </div>
+            
+            <div class="profile-details">
+                <img src="images/icons/edit.png" class="edit-profile" alt="EDIT/DISKETTE Group icons created by Freepik - Flaticon">
+
+                <h4 id="profile-name">Name</h4><span id="profile-email">email@dlsu.edu.ph</span>
+                <hr>
+                <p id="profile-description">Short description of the user goes here.</p>
+            </div>
+
+            <div class="profile-reservations">
+                <h3>User Lab Reservations</h3>
+                <div class="reservation-item">
+                    <p><strong>Room:</strong> Room GK101</p>
+                    <p><strong>Time:</strong> 10:00 AM - 12:00 PM</p>
+                    <p><strong>Day:</strong> Monday</p>
+                </div>
+                <hr>
+                <div class="reservation-item">
+                    <p><strong>Room:</strong> Room GK202</p>
+                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
+                    <p><strong>Day:</strong> Wednesday</p>
+                </div>
+                <hr>
+                <div class="reservation-item">
+                    <p><strong>Room:</strong> Room GK302</p>
+                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
+                    <p><strong>Day:</strong> Wednesday</p>
+                </div>
+                <hr>
+                <div class="reservation-item">
+                    <p><strong>Room:</strong> Room GK402</p>
+                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
+                    <p><strong>Day:</strong> Wednesday</p>
+                </div>
+                <hr>
+                <div class="reservation-item">
+                    <p><strong>Room:</strong> Room GK502</p>
+                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
+                    <p><strong>Day:</strong> Wednesday</p>
+                </div>
+            </div>
+
+            <div class="search-user">
+                <img src="images/icons/search.png" class="search-user-icon" alt="SEARCH Group icons created by Freepik - Flaticon">
+                <input type="text" id="user-search" placeholder="Search for users...">
+                <div id="autocomplete-user-search" class="autocomplete-user-search"></div>
+            </div>
+
+            <button class="delete-profile">Delete Profile</button>
+
+            <div class="delete-profile-yesno">
+                <img src="images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
+                <h3>Delete Account?</h3>
+                <div class="yesno-btn" id="no-delete">
+                    <p>No</p>
+                </div>
+                <div class="yesno-btn" id="yes-delete">
+                    <p>Yes</p>
+                </div>
+            </div>
+            
+        </div> 
+
+        <script src="script.js"></script>
+
+    </body>
 </html>
