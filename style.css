@@ -211,7 +211,8 @@
     transform: scale(1);
 }
 
-.close-login {
+.close-login,
+.close-delete-profile-yesno {
     position: absolute;
     width: 20px;
     height: 20px;

@@ -87,34 +87,39 @@ function updateProfile(user) {
 
     const img = new Image();
 
-    //get user data
-    const userDetail = userData[user];
+    //get user data if user is not "n/a"
+    if (user != "n/a") {
+        const userDetail = userData[user];
 
-    console.log("userData[" + user +"]");
-    console.log(userData[user]);
+        img.onload = function () {
+            profilePicture.src = fileURL;
+        };
+        img.onerror = function () {
+            profilePicture.innerHTML = defaultProfilePicture;
+            console.log('PFP NOT FOUND: Using Default.')
+        };
 
-    img.onload = function () {
-        profilePicture.src = fileURL;
-    };
-    img.onerror = function () {
-        profilePicture.innerHTML = defaultProfilePicture;
-    };
+        //update profile elements
+        profileName.innerText = userDetail.name;
+        profilePicture.src = userDetail.pfpURL;
+        profileEmail.innerText = userDetail.email;
+        profileDescription.innerText = userDetail.description;
 
+        userData[user] = {
+            name: profileName.innerText,
+            pfpURL: profilePicture.src,
+            email: profileEmail.innerText,
+            description: profileDescription.innerText
+        };
+    }
 
-    //update profile elements
-    profileName.innerText = userDetail.name;
-    profilePicture.src = userDetail.pfpURL; //assuming user images are saved with their names
-    profileEmail.innerText = userDetail.email;
-    profileDescription.innerText = userDetail.description;
-
-    userData[user] = {
-        name: profileName.innerText,
-        pfpURL: profilePicture.src,
-        email: profileEmail.innerText,
-        description: profileDescription.innerText
-    };
-
-    console.log("HEY " + userDetail.name);
+    //if no user profiles exist
+    if (Object.keys(userData).length === 0) {
+        profileName.innerText = "n/a";
+        profilePicture.src = defaultProfilePicture;
+        profileEmail.innerText = "n/a@dlsu.edu.ph";
+        profileDescription.innerText = "This user does not exist.";
+    }
 }
 
 
@@ -184,6 +189,38 @@ function uploadProfilePicture(file) {
 const searchUser = document.querySelector('.search-user-icon')
 const searchInput = document.getElementById('user-search');
 
+function clearSearchInput () {
+    document.getElementById('user-search').value = "";
+};
+
+function searchForUser() {
+    // fetch user input in the search bar
+    const userInput = document.getElementById('user-search').value.trim().toLowerCase();;
+
+    // filter data based on input
+    const searchResults = Object.values(userData).filter(function (user) {
+        return user.name.toLowerCase().includes(userInput);
+    });
+
+    // if only one result, update into that. if multiple, update into the closest match
+    if (searchResults.length >= 1) {
+        // call update profile
+        updateProfile(searchResults[0].email)
+    } else {
+        updateProfile("n/a")
+    }
+}
+
+//if user manually clicks search icon (user search)
+searchUser.addEventListener('click', searchForUser);
+
+searchInput.addEventListener('keypress', function (event) {
+    //check if enter key is pressed
+    if (event.key === 'Enter') {
+        searchForUser();
+    }
+});
+
 searchInput.addEventListener('input', function () {
     var input = this.value.toLowerCase();
     var suggestions = Object.values(userData);
@@ -227,43 +264,35 @@ searchInput.addEventListener('input', function () {
     });
 });
 
-//if user manually clicks search icon (user search)
-searchUser.addEventListener('click', () => {
-    // fetch user input in the search bar
-    const userInput = document.getElementById('user-search').value.trim().toLowerCase();;
-
-    // filter data based on input
-    const searchResults = Object.values(userData).filter(function (user) {
-        return user.name.toLowerCase().includes(userInput);
-    });
-
-    // if only one result, update into that. if multiple, update into the closest match
-    if (searchResults.length >= 1) {
-        // call update profile
-        updateProfile(searchResults[0].email)
-    }
-
-});
-
-
 // --USER PROFILE DELETE-- //
 const deleteProfileMenu = document.querySelector(".delete-profile-yesno");
 const deleteProfile = document.querySelector(".delete-profile");
 const deleteProfileProceed = document.querySelector("#yes-delete");
 const deleteProfileCancel = document.querySelector("#no-delete");
+const deleteProfileX = document.querySelector(".close-delete-profile-yesno")
 
 deleteProfile.addEventListener('click', () => {
     deleteProfileMenu.classList.add('popup');
 }); 
 deleteProfileProceed.addEventListener('click', () => {
     const profileEmail = document.getElementById("profile-email");
+
+
     delete userData[profileEmail.textContent];
     deleteProfileMenu.classList.remove('popup');
+    clearSearchInput();
     searchUser.dispatchEvent(new Event('click'));
 
-    window.location.assign('index.html'); //goes back to main dashboard
+    // window.location.assign('index.html'); //goes back to main dashboard
 }); 
+
 deleteProfileCancel.addEventListener('click', () => {
     deleteProfileMenu.classList.remove('popup');
 }); 
+
+deleteProfileX.addEventListener('click', () => {
+    deleteProfileMenu.classList.remove('popup');
+}); 
+
+
 
