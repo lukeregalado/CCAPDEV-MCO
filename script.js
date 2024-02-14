@@ -43,3 +43,7 @@ closeLogin.addEventListener('click', ()=> {
     resetLoginRegisterFields()
 });
 
+function openLabPopup() {
+    document.getElementById("labPopup").style.display = "block";
+  }
+
