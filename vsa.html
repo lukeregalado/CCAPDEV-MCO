@@ -18,7 +18,7 @@
                 </div>
                 <ul>
                     <li><a href="search.html">Search</a></li>
-                    <li><a href="vsa.html">View Slot Availability</a></li>
+                    <li><a href= "vsa.html">View Slot Availability</a></li>
                 </ul>
             </div>
             <div class="side-panel-content" id="reserve-content">
@@ -26,8 +26,8 @@
                     <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
                 </div>
                 <ul>
-                    <li><a href="#">See Reservations</a></li>
-                    <li><a href="#">Make Reservation</a></li>
+                    <li><a href="search.html">See Reservations</a></li>
+                    <li><a href="vsa.html">Make Reservation</a></li>
                 </ul>
             </div>
             <div class="side-panel-content" id="profile-content">
@@ -112,8 +112,53 @@
 
             </div>
 
-            <div>
-                
+            <p id = "appointment-header">Slot Availability</p>
+
+            <div id="appointment-pane-right">
+                <table id="seatTable">
+                    <tr>
+                        <th>Seat</th>
+                        <th>Status</th>
+                        <th>Reservee</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id ="appointment-pane-left">
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\computer.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Laboratory:</p>
+                    <select id = "roomSlotDropdown"
+                            class = "apptOption">
+                        <option value="Room GK101">Room GK101</option>
+                        <option value="Room GK202">Room GK202</option>
+                        <option value="Room GK302">Room GK302</option>
+                        <option value="Room GK304A">Room GK304A</option>
+                    </select>
+                </div>
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\calendar.png"
+                            class = "apptIcon">
+                    <p class = "appOptLabel">Date:</p>
+                    <input type = "date"
+                        id = "datePicker"
+                        class = "apptOption">
+                </div>
+                <div class = apptOptionContainer>
+                    <img    src = "images\clock.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Time:</p>
+                    <select id="timeSlotDropdown"
+                            class = "apptOption">
+                        <option value="8:00 AM - 10:00 AM">8:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
+                        <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                        <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                    </select>
+                </div>
+               
             </div>
         </div> 
 

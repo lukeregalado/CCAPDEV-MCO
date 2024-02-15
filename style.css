@@ -30,7 +30,7 @@
     transition: width 0.5s;
 
     box-shadow: 10px 3px 49px -1px rgba(0,0,0,0.75);
-    z-index: 99;
+    z-index: 100000;
 }
 
 .side-panel:hover {
@@ -139,6 +139,7 @@
     height: 100vh;
     background-color: var(--main);
     background: url(images/background.png) no-repeat;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,25 +183,25 @@
 }
 
 .wrap {
-        position: absolute;
-        width: 450px;
-        height: 500px;
-        border: 2px solid var(--sidepanel);
-        backdrop-filter: blur(25px);
-        border-radius: 20px;
-        box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.8) inset;
-    
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    
-        transition: .5s ease;
-    
-        transform: scale(0);
-    
-        z-index: 100000;
-    }
+    position: absolute;
+    width: 450px;
+    height: 500px;
+    border: 2px solid var(--sidepanel);
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.8) inset;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: .5s ease;
+
+    transform: scale(0);
+
+    z-index: 100000;
+}
 
 
 .wrap.active {
@@ -211,7 +212,8 @@
     transform: scale(1);
 }
 
-.close-login {
+.close-login,
+.close-delete-profile-yesno {
     position: absolute;
     width: 20px;
     height: 20px;
@@ -391,7 +393,517 @@
     margin: 0 0 0 100px;
     color: var(--main);
     font-weight: bold;
+    border-radius: 50%;
 }
+
+
+.pfp-container {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 350px;
+    top: 150px;
+}
+
+.pfp-container input {
+    display: none;
+}
+
+#profile-picture {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 350px;
+    top: 150px;
+    background: var(--sidepanel);
+    border: 5px solid var(--sidepanel);
+    border-radius: 50%;
+
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
+}
+
+.pfp-label {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 354.5px;
+    top: 154.5px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9999;
+
+    transition: background-color .2s ease;
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pfp-container input {
+    display: none;
+}
+
+.pfp-label span {
+    z-index: 10000;
+    padding: 65px 60px;
+    border-radius: 50%;
+    transition: background-color .2s ease;
+    z-index: 10000;
+
+    color: transparent;
+}
+
+.pfp-label:hover {
+    background-color: rgba(0,0,0,.8);
+    z-index: 10000;
+    color: var(--main);
+    transition: background-color .2s ease-in-out;
+    border-radius: 50%;
+    margin-bottom: 0;
+}
+
+.pfp-label span:hover {
+    color: var(--main);
+}
+
+.edit-pfp {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 490px;
+    top: 295px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: var(--sidepanel);
+    border: 1px solid var(--sidepanel);
+    border-radius: 50%;
+    z-index: 99;
+}
+
+.profile-details {
+    position: absolute;
+    width: 700px; 
+    height: 200px;
+    left: 575px; 
+    top: 150px;
+    background-color: var(--sidepanel);
+    border: 2px solid var(--sidepanel);
+    border-radius: 10px;
+    color: var(--main);
+
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8) inset;
+}
+
+.profile-details h4 {
+    font-size: 30px;
+    padding: 20px 0 0 20px;
+    font-weight: bold;
+}
+
+.profile-details span {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-style: italic;
+    padding: 0 0 0 20px;
+    color: #f1d6ab;
+}
+
+.profile-details hr {
+    width: 70%;
+    border: 1px solid var(--sidepanel);
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+.profile-details p {
+    padding: 0 20px 0 20px;
+    font-size: 20px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.profile-details img {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    padding: 10px;
+    background-color: var(--sidepanel);
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 15px;
+    z-index: 99;
+}
+
+#profile-name[contenteditable="true"],
+#profile-description[contenteditable="true"] {
+    background-color: var(--main);
+    color: var(--sidepanel);
+    padding: 0 0 0 10px;
+    text-decoration: underline;
+    font-style: italic;
+    border-radius: 10px;
+    outline: none;
+}
+
+#profile-name[contenteditable="true"] {
+    margin: 20px 20px 0 10px;
+}
+
+#profile-description[contenteditable="true"] {
+    margin: 0 20px 0 10px;
+}
+
+
+
+.profile-reservations {
+    position: absolute;
+    width: 910px;
+    height: 450px;
+    left: 325px;
+    top: 400px; 
+    background-color: var(--sidepanel);
+    border: 2px solid var(--sidepanel);
+    border-radius: 10px;
+    color: var(--main);
+    padding: 20px;
+    overflow-y: auto;
+
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8) inset;
+}
+
+.profile-reservations h3 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.profile-reservations hr {
+    width: 95%;
+    border: 1px solid var(--main);
+    margin-bottom: 20px;
+}
+
+.reservation-item {
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 20px;
+
+    transition: .5s;
+}
+
+.reservation-item:hover {
+    background-color: #007d43;
+    box-shadow: 1px -1px 18px 1px rgba(0,0,0,0.46);
+}
+
+.reservation-item p {
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.profile-reservations::-webkit-scrollbar {
+    width: 12px;
+}
+
+.profile-reservations::-webkit-scrollbar-thumb {
+    background-color: var(--sidepanel); 
+    border-radius: 10px;
+}
+
+.profile-reservations::-webkit-scrollbar-thumb:hover {
+    background-color: #00512b; 
+}
+
+.search-user {
+    position: absolute;
+    width: 400px; 
+    height: 80px;
+    left: 1350px; 
+    top: 150px;
+    background-color: var(--sidepanel);
+    border: 2px solid var(--sidepanel);
+    border-radius: 10px;
+    color: var(--main);
+
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
+}
+
+.search-user-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    left: 17.5px;
+    cursor: pointer;
+    padding: 10px;
+    background: none;
+    border: none;
+    outline: none;
+    z-index: 999;
+}
+
+#user-search {
+    width: 90%;
+    height: 40px;
+    font-size: 18px;
+    background-color: var(--main);
+    padding: 10px 10px 10px 35px;
+    margin: 20px 20px 0 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.autocomplete {
+    position: absolute;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.autocomplete-item {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    margin-left: 55px;
+    cursor: pointer;
+    border-bottom: 1px solid #005a30;
+    border-radius: 10px;
+    background-color: var(--sidepanel);
+
+    font-size: 23px;
+
+    transition: .5s;
+    box-shadow: 1px 22px 18px 0px rgba(0,0,0,0.46);
+}
+
+.autocomplete-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--main);
+    margin-bottom: 50px;
+}
+
+.autocomplete-item span {
+    position: absolute;
+    padding: 10px;
+}
+
+.autocomplete-item:hover {
+    background-color: #007d43;
+    color: #fff;
+}
+
+.delete-profile{
+    position: absolute;
+    width: 175px;
+    height: 50px;
+    top: 845px;
+    left: 1580px;
+    border-radius: 5px;
+    background: transparent;
+    backdrop-filter: blur(15px);
+    border: 1px solid #700000;
+    color: var(--main);
+    outline: none;
+    cursor: pointer;
+    font-size: 25px;
+    box-shadow: 2px -1px 149px -16px rgba(0,0,0,0.7);
+    transition: 0.5s;
+}
+
+.delete-profile:hover{
+    border: 1px solid transparent;
+    background-color: #9f0000;
+    color: var(--main);
+    box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.7);
+}
+
+.delete-profile-yesno {
+    position: absolute;
+    width: 450px;
+    height: 230px;
+    border: 2px solid #700000;
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.8) inset;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: scale(0);
+    transition: .5s ease;
+
+    z-index: 100000;
+}
+
+.delete-profile-yesno.popup {
+    transform: scale(1);
+}
+
+.delete-profile-yesno h3 {
+    position: absolute;
+    font-size: 2em;
+    text-align: center;
+    top: 45px;
+    padding-bottom: 30px;
+    color: #9f0000;
+}
+
+.yesno-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 25px;
+    border-radius: 20px;
+    outline: none;
+    color: var(--main);
+    padding: 20px;
+    margin: 100px 22.5px 0 22.5px;
+    cursor: pointer;
+    align-items: center;
+
+    transition: .5s;
+}
+
+.yesno-btn:first-of-type {
+    background-color: var(--sidepanel);
+}
+
+.yesno-btn:nth-of-type(2) {
+    background-color: #700000;
+}
+
+.yesno-btn:first-of-type:hover {
+    background-color: #009d54;
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
+}
+
+.yesno-btn:nth-of-type(2):hover {
+    background-color: #9f0000;
+    box-shadow: 2px -1px 101px 5px rgba(0,0,0,0.8);
+}
+
+#appointment-pane-right {
+    overflow: auto;
+    position: absolute;
+    display:flex;
+
+    top: 5%;
+    left: 55%;
+    height: 90%;
+
+    border: 4px solid #01371e;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 30px;
+
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.5);
+
+}
+
+#seatTable {
+    border-spacing: 0px; 
+    
+}
+
+#seatTable th,
+#seatTable td {
+    text-align: left;
+    
+    font-size: 1.4rem;
+    
+    padding-left: 10px;
+    padding-right: 90px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#seatTable tr:nth-child(even) {
+    background-color: rgba(214, 238, 238, 0.6);
+}
+
+
+#appointment-header {
+    font-weight: bold;
+    
+    position: absolute;
+    top:3%;
+    left: 10%;
+
+    font-size: 3rem;
+    color: var(--main);
+}
+
+#appointment-pane-left {
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    left: 150px;
+    top: 160px;
+
+    width: 40%;
+    height: 77%;
+ 
+
+    border: 4px solid #01371e;
+    border-radius: 20px;
+    
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.5);
+
+}
+
+.apptOptionContainer {
+    display: flex;
+    overflow: hidden;
+    
+    border: 4px solid #01371e;
+    border-radius: 20px;
+
+    margin: 20px;
+    flex-grow: 1;
+
+    background-color: rgba(214, 238, 238, 0.6);
+
+    align-items: center;
+}
+
+.apptIcon {
+    margin: 5%;
+    overflow: hidden;
+
+    flex: 0 0 20%;
+}
+
+.appOptLabel {
+    font-weight: bold;
+    font-size: 2rem;
+
+    position: relative;
+}
+
+.apptOption{
+    position: relative;
+    font-size: 1.4rem;
+    text-align: center;
+
+    right: 2hu0%;
+
+    border: 2px solid black;
+    background-color: rgba(214, 238, 238, 0.6);
+
+    border-radius: 30px;
+}
+
 
 .viewSchedBtnPanel{
     position: absolute;
