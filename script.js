@@ -31,10 +31,6 @@ function generateSeats(numSeats) {
     }
 };
 
-
-
-
-
 // executes when Register is clicked
 register.addEventListener('click', () => {
     wrap.classList.add('register-as');
