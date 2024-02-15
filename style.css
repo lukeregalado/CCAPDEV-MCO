@@ -841,7 +841,7 @@
     color: var(--main);
 }
 
-#appointment-pane-left {
+.appointment-pane-left {
     position: absolute;
     overflow: hidden;
     display: flex;
@@ -893,10 +893,10 @@
 
 .apptOption{
     position: relative;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-align: center;
 
-    right: 2hu0%;
+    left: 4%;
 
     border: 2px solid black;
     background-color: rgba(214, 238, 238, 0.6);
@@ -967,10 +967,10 @@
     position: relative;
     display: none;
     overflow: hidden;
-    width: 1000px;
+    width: 800px;
     height: 80vh;
     background-color: F7E7CE;
-    margin-left: 400px;
+    margin-left: 800px;
     border-radius: 5px;
     z-index: 98;
     display: flex;
@@ -1105,5 +1105,9 @@
 .reservationTable td{
     width: 200px;
     height: 50px;
+}
+
+#appointment-pane-left-res-slot{
+    font-size: small;
 }
 

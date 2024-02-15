@@ -117,160 +117,176 @@
 
             </div>
 
-            <div class="viewSchedBtnPanel">
-                <button class="viewSchedBtn" id="GK304A" onclick="openLabPopup()">
-                    <p>GK304A</p>
-                    <img src="computer.png" alt="">
-                </button>
-                <button class="viewSchedBtn">
-                    <p>GK304A</p>
-                    <img src="computer.png" alt="">
-                </button>
-                <button class="viewSchedBtn">
-                    <p>GK304A</p>
-                    <img src="computer.png" alt="">
-                </button>
-                <button class="viewSchedBtn">
-                    <p>GK304A</p>
-                    <img src="computer.png" alt="">
-                </button>
-                <button class="viewSchedBtn">
-                    <p>GK304A</p>
-                    <img src="computer.png" alt="">
-                </button>
+            <div class ="appointment-pane-left" id="appointment-pane-left-res-slot">
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\computer.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Laboratory:</p>
+                    <select id = "roomSlotDropdown"
+                            class = "apptOption">
+                        <option value="Room GK101">Room GK101</option>
+                        <option value="Room GK202">Room GK202</option>
+                        <option value="Room GK302">Room GK302</option>
+                        <option value="Room GK304A">Room GK304A</option>
+                    </select>
+                </div>
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\calendar.png"
+                            class = "apptIcon">
+                    <p class = "appOptLabel">Date:</p>
+                    <input type = "date"
+                        id = "datePicker"
+                        class = "apptOption">
+                </div>
+                <div class = apptOptionContainer>
+                    <img    src = "images\clock.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Time:</p>
+                    <select id="timeSlotDropdown"
+                            class = "apptOption">
+                        <option value="8:00 AM - 10:00 AM">8:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
+                        <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                        <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                    </select>
+                </div> 
             </div>
 
             <div class="labPopup" id="labPopup">
-                <form action="#">
-                    <div class="labPopupTitle">
-                        Slots for GK304A
-                    </div>
-                    <div class="seats">
-                        <div class="statusList">
-                            <div class="status">Available</div>
-                            <div class="status">Reserved</div>
-                            <div class="status">Selected</div>
+                    <form action="#">
+                        <div class="labPopupTitle">
+                            Slots for GK304A
                         </div>
-                        <div class="allSeats">
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
-                            
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
-                            
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
+                        <div class="seats">
+                            <div class="statusList">
+                                <div class="status">Available</div>
+                                <div class="status">Reserved</div>
+                                <div class="status">Selected</div>
+                            </div>
+                            <div class="allSeats">
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
+                                
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
+                                
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> 
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> 
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> 
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> 
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> 
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> 
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> <br>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> <br>
 
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label>
-                            <input type="checkbox" name="slot" id="s1">
-                            <label for="s1" class="seat booked"></label> 
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label>
+                                <input type="checkbox" name="slot" id="s1">
+                                <label for="s1" class="seat booked"></label> 
+                            </div>
                         </div>
-                    </div>
-                    <div class="times">
-                        <input type="radio" name="time" id="t1" checked/>
-                        <label for="t1">9:15</label>
-                        <input type="radio" name="time" id="t2">
-                        <label for="t2">11:00</label>
-                        <input type="radio" name="time" id="t3">
-                        <label for="t3">12:45</label>
-                        <input type="radio" name="time" id="t4">
-                        <label for="t4">14:30</label>
-                    </div>
-                </form>
+                        <div class="times">
+                            <input type="radio" name="time" id="t1" checked/>
+                            <label for="t1">9:15</label>
+                            <input type="radio" name="time" id="t2">
+                            <label for="t2">11:00</label>
+                            <input type="radio" name="time" id="t3">
+                            <label for="t3">12:45</label>
+                            <input type="radio" name="time" id="t4">
+                            <label for="t4">14:30</label>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </div> 
+
+            
         <script 
             src="script.js">
             let seats = document.querySelector(".allSeats")
