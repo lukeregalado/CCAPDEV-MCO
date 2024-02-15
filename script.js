@@ -574,7 +574,4 @@ deleteProfileX.addEventListener('click', () => {
     deleteProfileMenu.classList.remove('popup');
 }); 
 
-function openLabPopup() {
-    document.getElementById("labPopup").style.display = "block";
-  }
 

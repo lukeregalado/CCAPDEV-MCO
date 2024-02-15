@@ -979,9 +979,10 @@
     display: none;
     overflow: hidden;
     width: 800px;
-    height: 80vh;
+    height: 60vh;
     background-color: F7E7CE;
     margin-left: 800px;
+    margin-top: 80px;
     border-radius: 5px;
     z-index: 98;
     display: flex;
@@ -1020,14 +1021,14 @@
 .seats::before{
     content: "";
     position: absolute;
-    bottom: 0;
+    top: 40;
     left: 50%;
     transform: translate(-50%, 0);
     width: 220px;
     height: 7px;
-    background: rgb(141, 198, 255);
-    border-radius: 0 0 3mm 3mm;
-    border-top: 0.3mm solid rgb(180, 180, 180);
+    background: white;
+    border-radius: 3mm 3mm 0 0;
+    border-bottom: 0.3mm solid rgb(180, 180, 180);
 }
 
 .status{
@@ -1062,6 +1063,7 @@
     grid-template-columns: repeat(11, 1fr);
     grid-gap: 15px;
     margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 .seat{
@@ -1118,7 +1120,24 @@
     height: 50px;
 }
 
-#appointment-pane-left-res-slot{
-    font-size: small;
+#reserve-button-cont{
+    align-items: center;
+    justify-content: center;
+    padding-left: 300px;
+}
+
+#reserve-button{
+    height: 50px;
+    width: 100px;
+    background-color: #004225;
+    color: white;
+    border-radius: 2mm;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+#reserve-button:hover{
+    background-color: #00703C;
 }
 
