@@ -13,6 +13,28 @@ function resetLoginRegisterFields() {
     document.getElementById('reg-confirm-pw').value = "";
 }
 
+//Fill AppointmentTable
+function generateSeats(numSeats) {
+    var table = document.getElementById("seatTable");
+
+
+    for (var i = 1; i <= numSeats; i++) {
+        var row = table.insertRow();
+        var seatCell = row.insertCell(0);
+        var statusCell = row.insertCell(1);
+        var reserveeCell = row.insertCell(2);
+
+   
+        seatCell.innerHTML = ("0" + i).slice(-2); 
+        statusCell.innerHTML = "Available";
+        reserveeCell.innerHTML = "None";
+    }
+};
+
+
+
+
+
 // executes when Register is clicked
 register.addEventListener('click', () => {
     wrap.classList.add('register-as');
@@ -77,7 +99,9 @@ const userData = {
 
 const defaultProfilePicture = "images/sample-users/Name";
 
+generateSeats(20);
 updateProfile("im_nayeon@dlsu.edu.ph"); //HARDCODED DEFAULT LANDING PAGE
+
 
 function updateProfile(user) {
     const profileName = document.getElementById("profile-name");
@@ -293,6 +317,10 @@ deleteProfileCancel.addEventListener('click', () => {
 deleteProfileX.addEventListener('click', () => {
     deleteProfileMenu.classList.remove('popup');
 }); 
+
+
+
+
 
 
 

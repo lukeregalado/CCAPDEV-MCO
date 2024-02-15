@@ -1,7 +1,4 @@
-<!--    REFERENCES
-    - https://codepen.io/azazy/pen/EgdXxG           -> change image feature
-    - https://www.flaticon.com/free-icons/group     -> icons
--->
+<!-- <a href="https://www.flaticon.com/free-icons/group" title="group icons"></a> -->
 
 <html>
     <head>
@@ -21,7 +18,7 @@
                 </div>
                 <ul>
                     <li><a href="search.html">Search</a></li>
-                    <li><a href="vsa.html">View Slot Availability</a></li>
+                    <li><a href= "vsa.html">View Slot Availability</a></li>
                 </ul>
             </div>
             <div class="side-panel-content" id="reserve-content">
@@ -29,7 +26,7 @@
                     <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
                 </div>
                 <ul>
-                    <li><a href="#">See Reservations</a></li>
+                    <li><a href="search.html">See Reservations</a></li>
                     <li><a href="vsa.html">Make Reservation</a></li>
                 </ul>
             </div>
@@ -112,76 +109,57 @@
                             </div>
                         </form>
                 </div>
+
             </div>
 
-            <div id="pfp-container">
-                <label class="pfp-label" for="file">
-                    <span>Change Image</span>
-                  </label>
-                  <input id="file" type="file" onchange="loadFile(event)"/>
-                <img id="profile-picture" alt="Profile Picture">
-            </div>
-            
-            <div class="profile-details">
-                <img src="images/icons/edit.png" class="edit-profile" alt="EDIT/DISKETTE Group icons created by Freepik - Flaticon">
+            <p id = "appointment-header">Slot Availability</p>
 
-                <h4 id="profile-name">Name</h4><span id="profile-email">email@dlsu.edu.ph</span>
-                <hr>
-                <p id="profile-description">Short description of the user goes here.</p>
+            <div id="appointment-pane-right">
+                <table id="seatTable">
+                    <tr>
+                        <th>Seat</th>
+                        <th>Status</th>
+                        <th>Reservee</th>
+                    </tr>
+                </table>
             </div>
 
-            <div class="profile-reservations">
-                <h3>User Lab Reservations</h3>
-                <div class="reservation-item">
-                    <p><strong>Room:</strong> Room GK101</p>
-                    <p><strong>Time:</strong> 10:00 AM - 12:00 PM</p>
-                    <p><strong>Day:</strong> Monday</p>
+            <div id ="appointment-pane-left">
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\computer.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Laboratory:</p>
+                    <select id = "roomSlotDropdown"
+                            class = "apptOption">
+                        <option value="Room GK101">Room GK101</option>
+                        <option value="Room GK202">Room GK202</option>
+                        <option value="Room GK302">Room GK302</option>
+                        <option value="Room GK304A">Room GK304A</option>
+                    </select>
                 </div>
-                <hr>
-                <div class="reservation-item">
-                    <p><strong>Room:</strong> Room GK202</p>
-                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-                    <p><strong>Day:</strong> Wednesday</p>
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\calendar.png"
+                            class = "apptIcon">
+                    <p class = "appOptLabel">Date:</p>
+                    <input type = "date"
+                        id = "datePicker"
+                        class = "apptOption">
                 </div>
-                <hr>
-                <div class="reservation-item">
-                    <p><strong>Room:</strong> Room GK302</p>
-                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-                    <p><strong>Day:</strong> Wednesday</p>
+                <div class = apptOptionContainer>
+                    <img    src = "images\clock.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Time:</p>
+                    <select id="timeSlotDropdown"
+                            class = "apptOption">
+                        <option value="8:00 AM - 10:00 AM">8:00 AM - 10:00 AM</option>
+                        <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+                        <option value="12:00 PM - 2:00 PM">12:00 PM - 2:00 PM</option>
+                        <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                        <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                    </select>
                 </div>
-                <hr>
-                <div class="reservation-item">
-                    <p><strong>Room:</strong> Room GK402</p>
-                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-                    <p><strong>Day:</strong> Wednesday</p>
-                </div>
-                <hr>
-                <div class="reservation-item">
-                    <p><strong>Room:</strong> Room GK502</p>
-                    <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-                    <p><strong>Day:</strong> Wednesday</p>
-                </div>
+               
             </div>
-
-            <div class="search-user">
-                <img src="images/icons/search.png" class="search-user-icon" alt="SEARCH Group icons created by Freepik - Flaticon">
-                <input type="text" id="user-search" placeholder="Search for users...">
-                <div id="autocomplete-user-search" class="autocomplete-user-search"></div>
-            </div>
-
-            <button class="delete-profile">Delete Profile</button>
-
-            <div class="delete-profile-yesno">
-                <img src="images/icons/close.png" class="close-delete-profile-yesno" alt="CLOSE Group icons created by Freepik - Flaticon">
-                <h3>Delete Account?</h3>
-                <div class="yesno-btn" id="no-delete">
-                    <p>No</p>
-                </div>
-                <div class="yesno-btn" id="yes-delete">
-                    <p>Yes</p>
-                </div>
-            </div>
-            
         </div> 
 
         <script src="script.js"></script>
