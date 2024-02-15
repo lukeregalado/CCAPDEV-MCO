@@ -182,24 +182,26 @@
 }
 
 .wrap {
-    position: relative;
-    width: 450px;
-    height: 500px;
-    border: 2px solid;
-    border-color: var(--sidepanel);
-    backdrop-filter: blur(25px);
-    border-radius: 20px;
-    box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.8) inset;
+        position: absolute;
+        width: 450px;
+        height: 500px;
+        border: 2px solid var(--sidepanel);
+        backdrop-filter: blur(25px);
+        border-radius: 20px;
+        box-shadow: 2px -1px 101px 15px rgba(0,0,0,0.8) inset;
+    
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        transition: .5s ease;
+    
+        transform: scale(0);
+    
+        z-index: 100000;
+    }
 
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: .5s ease;
-
-    transform: scale(0)
-}
 
 .wrap.active {
     height: 600px;
@@ -403,7 +405,7 @@
     scrollbar-color: 00703C;
     height: 100vh;
     margin-right: 1000px;
-    z-index: 98;
+    z-index: 50;
 }
 
 .viewSchedBtnPanel::-webkit-scrollbar {
@@ -456,7 +458,7 @@
     width: 1000px;
     height: 80vh;
     background-color: F7E7CE;
-    margin-left: 0px;
+    margin-left: 400px;
     border-radius: 5px;
     z-index: 98;
     display: flex;
@@ -513,10 +515,10 @@
     content: "";
     position: absolute;
     top: 50%;
-    left: -12px;
+    left: -25px;
     transform: translate(0, -50%);
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     background: rgb(255, 255, 255);
     outline: 0.2mm solid rgb(120, 120, 120);
     border-radius: 0.3mm;
@@ -534,13 +536,14 @@
 
 .allSeats{
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(11, 1fr);
     grid-gap: 15px;
+    margin-top: 30px;
 }
 
 .seat{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background: white;
     border-radius: 0.5mm;
     outline: 0.3mm solid rgb(180, 180, 180);
@@ -560,3 +563,35 @@
     background: rgb(180, 180, 180);
     outline: none;
 }
+
+.labPopup input{
+    display: none;
+}
+
+.reservationTable{
+    align-items: center;
+    text-align: center;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: #F7E7CE;
+}
+
+.reservationTable th, tr, td{
+    border: 1px solid black;
+}
+
+.DTRes,
+.DTReq{
+    width: 300px;
+}
+
+.reservationTable th{
+    height: 50px;
+}
+
+.reservationTable td{
+    width: 200px;
+    height: 50px;
+}
+

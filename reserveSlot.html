@@ -1,0 +1,294 @@
+<html>
+    <head>
+        <title>Calendar</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <html>
+    <head>
+        <title>Lab Reservation System</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div id="my-side-panel" class="side-panel">
+            <div class="main-icon">
+                <a href="index.html"><img src="images/icons/computer.png" alt="CLOCK Group icons created by Freepik - Flaticon"></a>
+            </div>
+
+            <div class="side-panel-content" id="calendar-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/calendar.png" alt="CALENDAR Group icons created by Freepik - Flaticon"><p>Calendar</p>
+                </div>
+                <ul>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">View Slot Availability</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="reserve-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
+                </div>
+                <ul>
+                    <li><a href="#">See Reservations</a></li>
+                    <li><a href="#">Make Reservation</a></li>
+                </ul>
+            </div>
+            <div class="side-panel-content" id="profile-content">
+                <div class="side-panel-content-options">
+                    <img src="images/icons/user.png" alt="USER Group icons created by Freepik - Flaticon" class="user-icon"><p>Profile</p>
+                </div>
+                <ul>
+                    <li><a href="profile.html">View Profile</a></li>
+                </ul>
+            </div>
+        </div>
+ 
+        <div class="main-content">
+            <div class="header">
+                <button class="login-popup">LOGIN</button>
+            </div>
+
+            <div class="wrap">
+                <img src="images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
+
+                <div class="login-form login">
+                    <h3>Login Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" id="login-email" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="login-pw" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <button type="submit" class="btn">Login</button>
+                            <div class="register">
+                                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                            </div>
+                        </form>
+                </div>
+
+                <div class="login-form reg-as">
+                    <h3>Register as:</h3>
+                        <div class="reg-as-option" id="reg-as-student" onclick="registerAs('s')">
+                            <img src="images/icons/student.png" alt="STUDENT Group icons created by Freepik - Flaticon">
+                            <p>Student</p>
+                        </div>
+
+                        <div class="reg-as-option" id="reg-as-tech" onclick="registerAs('t')">
+                            <img src="images/icons/technician.png" alt="TECHNICIAN Group icons created by Freepik - Flaticon">
+                            <p>Lab Technician</p>
+                        </div>
+                </div>
+
+                <div class="login-form register">
+                    <h3>Registration <br> Portal</h3>
+                        <form action="#">
+                            <div class="input-field">
+                                <input type="email" placeholder="" id="reg-email" required>
+                                <label>Email</label>
+                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="reg-pw" required>
+                                <label>Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            
+                            <div class="input-field">
+                                <input type="password" placeholder="" id="reg-confirm-pw" required>
+                                <label>Confirm Password</label>
+                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+                            <button type="submit" class="btn">Register</button>
+                            <div class="login">
+                                <p>Already have an account? <a href="#" class="login-link">Login</a></p>
+                            </div>
+                        </form>
+                </div>
+
+            </div>
+
+            <div class="viewSchedBtnPanel">
+                <button class="viewSchedBtn" id="GK304A" onclick="openLabPopup()">
+                    <p>GK304A</p>
+                    <img src="computer.png" alt="">
+                </button>
+                <button class="viewSchedBtn">
+                    <p>GK304A</p>
+                    <img src="computer.png" alt="">
+                </button>
+                <button class="viewSchedBtn">
+                    <p>GK304A</p>
+                    <img src="computer.png" alt="">
+                </button>
+                <button class="viewSchedBtn">
+                    <p>GK304A</p>
+                    <img src="computer.png" alt="">
+                </button>
+                <button class="viewSchedBtn">
+                    <p>GK304A</p>
+                    <img src="computer.png" alt="">
+                </button>
+            </div>
+
+            <div class="labPopup" id="labPopup">
+                <form action="#">
+                    <div class="labPopupTitle">
+                        Slots for GK304A
+                    </div>
+                    <div class="seats">
+                        <div class="statusList">
+                            <div class="status">Available</div>
+                            <div class="status">Reserved</div>
+                            <div class="status">Selected</div>
+                        </div>
+                        <div class="allSeats">
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+                            
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+                            
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> 
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> 
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> 
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> <br>
+
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label>
+                            <input type="checkbox" name="slot" id="s1">
+                            <label for="s1" class="seat booked"></label> 
+                        </div>
+                    </div>
+                    <div class="times">
+                        <input type="radio" name="time" id="t1" checked/>
+                        <label for="t1">9:15</label>
+                        <input type="radio" name="time" id="t2">
+                        <label for="t2">11:00</label>
+                        <input type="radio" name="time" id="t3">
+                        <label for="t3">12:45</label>
+                        <input type="radio" name="time" id="t4">
+                        <label for="t4">14:30</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script 
+            src="script.js">
+            let seats = document.querySelector(".allSeats")
+            for(var i = 0; i < 59; i++){     
+                let randint = Math.floor(Math.random() * 2);
+                let booked = randint == 1 ? "booked" : "";
+                seats.insertAdjacentHTML(
+                    "beforeend", 
+                    '<input type="checkbox" name="slot" id="s' + 
+                    (i+2) +
+                     '" /><label for="s' + 
+                    (i+2) + 
+                    '" class="seat ' + 
+                    booked + 
+                    '"></label>'
+                );
+            }
+        </script>
+    </body>
+
+</html>
