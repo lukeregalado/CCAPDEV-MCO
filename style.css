@@ -401,8 +401,8 @@
     position: absolute;
     width: 180px;
     height: 180px;
-    left: 350px;
-    top: 150px;
+    left: 90px;
+    top: 70px;
 }
 
 .pfp-container input {
@@ -413,8 +413,8 @@
     position: absolute;
     width: 180px;
     height: 180px;
-    left: 350px;
-    top: 150px;
+    left: 90px;
+    top: 70px;
     background: var(--sidepanel);
     border: 5px solid var(--sidepanel);
     border-radius: 50%;
@@ -426,8 +426,8 @@
     position: absolute;
     width: 180px;
     height: 180px;
-    left: 354.5px;
-    top: 154.5px;
+    left: 94.5px;
+    top: 74.9px;
     border-radius: 50%;
     cursor: pointer;
     z-index: 9999;
@@ -485,8 +485,8 @@
     position: absolute;
     width: 700px; 
     height: 200px;
-    left: 575px; 
-    top: 150px;
+    left: 300px; 
+    top: 70px;
     background-color: var(--sidepanel);
     border: 2px solid var(--sidepanel);
     border-radius: 10px;
@@ -561,9 +561,9 @@
 .profile-reservations {
     position: absolute;
     width: 910px;
-    height: 450px;
-    left: 325px;
-    top: 400px; 
+    height: 350px;
+    left: 100px;
+    top: 300px; 
     background-color: var(--sidepanel);
     border: 2px solid var(--sidepanel);
     border-radius: 10px;
@@ -621,8 +621,8 @@
     position: absolute;
     width: 400px; 
     height: 80px;
-    left: 1350px; 
-    top: 150px;
+    left: 1050px; 
+    top: 75px;
     background-color: var(--sidepanel);
     border: 2px solid var(--sidepanel);
     border-radius: 10px;
@@ -912,66 +912,6 @@
 
     font-size: 1.5rem;
     color: var(--main);
-}
-
-
-
-.viewSchedBtnPanel{
-    position: absolute;
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    overflow: auto;
-    background-color: F7E7CE;
-    border-radius: 10px;
-    scrollbar-color: 00703C;
-    height: 100vh;
-    margin-right: 1000px;
-    z-index: 50;
-}
-
-.viewSchedBtnPanel::-webkit-scrollbar {
-    width: 12px;
-}
-
-.viewSchedBtnPanel::-webkit-scrollbar-thumb {
-    background-color: var(--sidepanel); 
-    border-radius: 10px;
-}
-
-.viewSchedBtnPanel::-webkit-scrollbar-thumb:hover {
-    background-color: #00512b; 
-}
-
-.viewSchedBtn{
-    height: 110px;
-    width: 250px;
-    display: flex;
-    flex-direction: row;
-    border-radius: 10px;
-    background-color: var(--sidepanel);
-    margin: 10px;
-    box-shadow: 1px -1px 18px 1px rgba(0,0,0,0.46);
-    font-family: Louis;
-    font-size: 25px;
-
-}
-
-.viewSchedBtn img{
-    height: 100px;
-    width: 100px;
-    margin-left: 20px;
-}
-
-.viewSchedBtn p{
-    margin-top: 37px;
-    margin-left: 20px;
-    color: F7E7CE;
-}
-
-.viewSchedBtn:hover{
-    background-color: 00512b;
 }
 
 .labPopup{
