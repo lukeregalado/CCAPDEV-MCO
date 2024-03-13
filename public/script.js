@@ -2,7 +2,7 @@ const wrap = document.querySelector('.wrap');
 const login = document.querySelector('.login-link');
 const register = document.querySelector('.register-link');
 const openLogin = document.querySelector('.login-popup')
-const closeLogin = document.querySelector('.close-login')
+const closeLogin = document.querySelector('.close-login');
 
 // clears all input fields
 function resetLoginRegisterFields() {
@@ -61,6 +61,7 @@ closeLogin.addEventListener('click', () => {
     resetLoginRegisterFields()
 });
 
+
 //PAGE NAVIGATION
 
 function viewPage(page) {
@@ -70,7 +71,7 @@ function viewPage(page) {
 const userData = {
     "im_nayeon@dlsu.edu.ph": {
         name: "Im Na-yeon",
-        pfpURL: "images/sample-users/Im Na-yeon", // Corrected the concatenation
+        pfpURL: "images/sample-users/Im Na-yeon",
         email: "im_nayeon@dlsu.edu.ph",
         description: "Student at DLSU University. Lead vocalist of TWICE."
     },
@@ -112,6 +113,10 @@ function updateProfile(user) {
     const profileEmail = document.getElementById("profile-email");
     const profileDescription = document.getElementById("profile-description");
 
+    const source = fs.readFileSync('profile.hbs', 'utf8');
+    const template = Handlebars.compile(source);
+    
+
     const img = new Image();
 
     //get user data if user is not "n/a"
@@ -138,6 +143,11 @@ function updateProfile(user) {
             email: profileEmail.innerText,
             description: profileDescription.innerText
         };
+
+        const html = template(userData[user]);
+
+        console.log(template(userData[user]));
+        document.getElementById("profile-details").innerHTML = html;
     }
 
     //if no user profiles exist
@@ -147,6 +157,8 @@ function updateProfile(user) {
         profileEmail.innerText = "n/a@dlsu.edu.ph";
         profileDescription.innerText = "This user does not exist.";
     }
+
+    console.log(profileName.innerText);
 }
 
 
@@ -248,48 +260,64 @@ searchInput.addEventListener('keypress', function (event) {
     }
 });
 
-searchInput.addEventListener('input', function () {
-    var input = this.value.toLowerCase();
-    var suggestions = Object.values(userData);
-    var autocompleteDiv = document.getElementById('autocomplete-user-search');
+// searchInput.addEventListener('input', function () {
+//     var input = this.value.toLowerCase();
+//     var suggestions = Object.values(userData);
+//     var autocompleteDiv = document.getElementById('autocomplete-user-search');
 
-    //clear prev suggestion from prev searches
-    autocompleteDiv.innerHTML = '';
+//     //clear prev suggestion from prev searches
+//     autocompleteDiv.innerHTML = '';
 
-    //filter -> display matching suggestions
-    suggestions.filter(user => user.name.toLowerCase().includes(input)).forEach(function (user) {
-        var div = document.createElement('div');
-        div.classList.add('autocomplete-item');
+//     //filter -> display matching suggestions
+//     suggestions.filter(user => user.name.toLowerCase().includes(input)).forEach(function (user) {
+//         var div = document.createElement('div');
+//         div.classList.add('autocomplete-item');
 
-        //suggestion pfp
-        var img = document.createElement('img');
-        img.src = user.pfpURL; //path to suggestion pfp
-        img.alt = user.name;
-        img.classList.add('autocomplete-img');
-        div.appendChild(img);
+//         //suggestion pfp
+//         var img = document.createElement('img');
+//         img.src = user.pfpURL; //path to suggestion pfp
+//         img.alt = user.name;
+//         img.classList.add('autocomplete-img');
+//         div.appendChild(img);
 
-        //suggestion name
-        var span = document.createElement('span');
-        span.textContent = user.name;
-        div.appendChild(span);
+//         //suggestion name
+//         var span = document.createElement('span');
+//         span.textContent = user.name;
+//         div.appendChild(span);
 
-        div.addEventListener('click', function () {
-            //if user clicks suggestion, it will be retained in the input bar
-            document.getElementById('user-search').value = user.name;
-            updateProfile(user.email);
-            autocompleteDiv.innerHTML = '';
+//         div.addEventListener('click', function () {
+//             //if user clicks suggestion, it will be retained in the input bar
+//             document.getElementById('user-search').value = user.name;
+//             updateProfile(user.email);
+//             autocompleteDiv.innerHTML = '';
+//         });
+
+//         autocompleteDiv.appendChild(div);   //add that div (user pfp + name)
+//     });
+
+//     //if user clicks away, removes display
+//     document.addEventListener("click", function (event) {
+//         if (!event.target.closest(".search-user")) {
+//             autocompleteDiv.innerHTML = '';
+//         }
+//     });
+// });
+
+fetch('/userNames')
+    .then(response => response.json())
+    .then(userNames => {
+        // init autocomplete
+        const autocomplete = new Awesomplete('#user-search', { list: userNames });
+
+        // if input change
+        document.getElementById('user-search').addEventListener('input', function() {
+            // update autocomplete list based on input 
+            autocomplete.list = userNames.filter(name =>
+                name.toLowerCase().includes(this.value.toLowerCase())
+            );
         });
-
-        autocompleteDiv.appendChild(div);   //add that div (user pfp + name)
-    });
-
-    //if user clicks away, removes display
-    document.addEventListener("click", function (event) {
-        if (!event.target.closest(".search-user")) {
-            autocompleteDiv.innerHTML = '';
-        }
-    });
-});
+    })
+    .catch(error => console.error('Error fetching user names:', error));
 
 // --USER PROFILE DELETE-- //
 const deleteProfileMenu = document.querySelector(".delete-profile-yesno");
@@ -321,5 +349,6 @@ deleteProfileX.addEventListener('click', () => {
     deleteProfileMenu.classList.remove('popup');
 }); 
 
-
-
+module.exports = {
+    updateProfile: updateProfile
+};

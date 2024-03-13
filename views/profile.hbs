@@ -3,48 +3,27 @@
         <span>Change Image</span>
         </label>
         <input id="file" type="file" onchange="loadFile(event)"/>
-    <img id="profile-picture" alt="Profile Picture">
+    <img id="profile-picture" alt="Profile Picture" src="{{userData.pfpURL}}">
 </div>
 
 <div class="profile-details">
     <img src="images/icons/edit.png" class="edit-profile" alt="EDIT/DISKETTE Group icons created by Freepik - Flaticon">
 
-    <h4 id="profile-name">Name</h4><span id="profile-email">email@dlsu.edu.ph</span>
+    <h4 id="profile-name">{{userData.name}}</h4><span id="profile-email">{{userData.email}}</span>
     <hr>
-    <p id="profile-description">Short description of the user goes here.</p>
+    <p id="profile-description">{{userData.description}}</p>
 </div>
 
 <div class="profile-reservations">
     <h3>User Lab Reservations</h3>
+    {{#each reservations}}
     <div class="reservation-item">
-        <p><strong>Room:</strong> Room GK101</p>
-        <p><strong>Time:</strong> 10:00 AM - 12:00 PM</p>
-        <p><strong>Day:</strong> Monday</p>
+        <p><strong>Room:</strong> {{room}}</p>
+        <p><strong>Time:</strong> {{time}}</p>
+        <p><strong>Day:</strong> {{day}}</p>
     </div>
     <hr>
-    <div class="reservation-item">
-        <p><strong>Room:</strong> Room GK202</p>
-        <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-        <p><strong>Day:</strong> Wednesday</p>
-    </div>
-    <hr>
-    <div class="reservation-item">
-        <p><strong>Room:</strong> Room GK302</p>
-        <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-        <p><strong>Day:</strong> Wednesday</p>
-    </div>
-    <hr>
-    <div class="reservation-item">
-        <p><strong>Room:</strong> Room GK402</p>
-        <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-        <p><strong>Day:</strong> Wednesday</p>
-    </div>
-    <hr>
-    <div class="reservation-item">
-        <p><strong>Room:</strong> Room GK502</p>
-        <p><strong>Time:</strong> 2:00 PM - 4:00 PM</p>
-        <p><strong>Day:</strong> Wednesday</p>
-    </div>
+    {{/each}}
 </div>
 
 <div class="search-user">
