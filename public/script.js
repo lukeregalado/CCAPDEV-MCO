@@ -1,6 +1,7 @@
 const wrap = document.querySelector('.wrap');
 const login = document.querySelector('.login-link');
 const register = document.querySelector('.register-link');
+const registerForm = document.getElementById('registration-form');
 const openLogin = document.querySelector('.login-popup')
 const closeLogin = document.querySelector('.close-login');
 
@@ -41,6 +42,9 @@ register.addEventListener('click', () => {
 function registerAs(r) {
     wrap.classList.add('active');
     wrap.classList.remove('register-as');
+
+    registerForm.classList = '';
+    registerForm.classList.add(r)
     resetLoginRegisterFields()
 }
 
@@ -59,6 +63,58 @@ openLogin.addEventListener('click', () => {
 closeLogin.addEventListener('click', () => {
     wrap.className = "wrap";
     resetLoginRegisterFields()
+});
+
+function verifyConfirmPassword () {
+    const password = document.getElementById('reg-pw').value;
+    const confPassword = document.getElementById('reg-confirm-pw').value;
+
+    if (password !== confPassword) {
+        alert('Passwords do not match. Please try again.')
+    } else {
+        return 1;
+    }
+
+    return 0;
+}
+
+document.getElementById('registration-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // prevent default form submission
+
+    if (verifyConfirmPassword() == 1) {
+        // fetch user input
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-pw').value;
+        let pos = ''; //t for technication; s for student
+        if (registerForm.classList.contains('t')){
+            pos = 'Lab Technician';
+        } else {
+            pos = 'Student'
+        }
+
+        // send registration data to server
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email, password: password , pos: pos})
+        })
+        .then(response => {
+            if (response.ok) {
+                // registration successful
+                console.log('Registration successful');
+                viewPage('profile/' + email);
+            } else {
+                // registration fail
+                console.error('Registration failed');
+                alert('An account with this email already exists!');
+            }
+        })
+        .catch(error => {
+            console.error('Error during registration:', error);
+        });
+    }
 });
 
 
@@ -104,94 +160,52 @@ const userData = {
 const defaultProfilePicture = "images/sample-users/Name";
 
 generateSeats();
-updateProfile("im_nayeon@dlsu.edu.ph"); //HARDCODED DEFAULT LANDING PAGE
-
-
-function updateProfile(user) {
-    const profileName = document.getElementById("profile-name");
-    const profilePicture = document.getElementById("profile-picture");
-    const profileEmail = document.getElementById("profile-email");
-    const profileDescription = document.getElementById("profile-description");
-
-    const source = fs.readFileSync('profile.hbs', 'utf8');
-    const template = Handlebars.compile(source);
-    
-
-    const img = new Image();
-
-    //get user data if user is not "n/a"
-    if (user != "n/a") {
-        const userDetail = userData[user];
-
-        img.onload = function () {
-            profilePicture.src = fileURL;
-        };
-        img.onerror = function () {
-            profilePicture.innerHTML = defaultProfilePicture;
-            console.log('PFP NOT FOUND: Using Default.')
-        };
-
-        //update profile elements
-        profileName.innerText = userDetail.name;
-        profilePicture.src = userDetail.pfpURL;
-        profileEmail.innerText = userDetail.email;
-        profileDescription.innerText = userDetail.description;
-
-        userData[user] = {
-            name: profileName.innerText,
-            pfpURL: profilePicture.src,
-            email: profileEmail.innerText,
-            description: profileDescription.innerText
-        };
-
-        const html = template(userData[user]);
-
-        console.log(template(userData[user]));
-        document.getElementById("profile-details").innerHTML = html;
-    }
-
-    //if no user profiles exist
-    if (Object.keys(userData).length === 0) {
-        profileName.innerText = "n/a";
-        profilePicture.src = defaultProfilePicture;
-        profileEmail.innerText = "n/a@dlsu.edu.ph";
-        profileDescription.innerText = "This user does not exist.";
-    }
-
-    console.log(profileName.innerText);
-}
-
-
 
 // --USER PROFILE EDIT-- //
-const editProfile = document.querySelector('.edit-profile')
-
-let isEditMode = false;
-
 function toggleEditMode() {
     const profileName = document.getElementById('profile-name');
     const profilePicture = document.getElementById('profile-picture')
     const profileEmail = document.getElementById('profile-email')
     const profileDescription = document.getElementById('profile-description');
+    const editProfile = document.querySelector('.edit-profile')
 
-    isEditMode = !isEditMode;
 
-    if (isEditMode) {
+    if (profileName.contentEditable == false || !profileName.hasAttribute("contentEditable")) {
         profileName.contentEditable = true;
         profileDescription.contentEditable = true;
-        editProfile.src = 'images/icons/save.png';
+        editProfile.src = '/images/icons/save.png';
     } else {
         // disable edit
         profileName.contentEditable = false;
         profileDescription.contentEditable = false;
-        editProfile.src = 'images/icons/edit.png';
+        editProfile.src = '/images/icons/edit.png';
 
-        saveChangesToServer(profileEmail.textContent, profileName.textContent, profileDescription.textContent);
-        updateProfile(profileEmail.textContent);
+        // saveChangesToServer(profileEmail.textContent, profileName.textContent, profileDescription.textContent);
+        // updateProfile(profileEmail.textContent);
+
+        fetch('/edit-profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                email: profileEmail.textContent, 
+                name: profileName.textContent, 
+                description: profileDescription.textContent}) // pass email of user to be edited (key)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to edit profile');
+            }
+            // action after editing
+            // viewPage('');
+        })
+        .catch(error => {
+            console.error('Error editing profile:', error);
+        });
+    
     }
 }
- 
-editProfile.addEventListener('click', toggleEditMode);
 
 var loadFile = function (event) {
     const profilePicture = document.getElementById("profile-picture");
@@ -200,13 +214,6 @@ var loadFile = function (event) {
     profilePicture.src = URL.createObjectURL(event.target.files[0]);
     userData[profileEmail.textContent].pfpURL = profilePicture.src;
 };
-
-function saveChangesToServer(email, newName, newDescription) {
-    //placeholder content
-    console.log('Saving changes to the server:', newName, newDescription);
-    userData[email].name = newName;
-    userData[email].description = newDescription;
-}
 
 function uploadProfilePicture(file) {
     // Placeholder function for handling the file upload
@@ -223,42 +230,41 @@ function uploadProfilePicture(file) {
 }
 
 
-
 // --USER PROFILE SEARCH-- //
 const searchUser = document.querySelector('.search-user-icon')
-const searchInput = document.getElementById('user-search');
+// const searchInput = document.getElementById('user-search');
 
 function clearSearchInput () {
     document.getElementById('user-search').value = "";
 };
 
-function searchForUser() {
-    // fetch user input in the search bar
-    const userInput = document.getElementById('user-search').value.trim().toLowerCase();;
+// function searchForUser() {
+//     // fetch user input in the search bar
+//     const userInput = document.getElementById('user-search').value.trim().toLowerCase();;
 
-    // filter data based on input
-    const searchResults = Object.values(userData).filter(function (user) {
-        return user.name.toLowerCase().includes(userInput);
-    });
+//     // filter data based on input
+//     const searchResults = Object.values(userData).filter(function (user) {
+//         return user.name.toLowerCase().includes(userInput);
+//     });
 
-    // if only one result, update into that. if multiple, update into the closest match
-    if (searchResults.length >= 1) {
-        // call update profile
-        updateProfile(searchResults[0].email)
-    } else {
-        updateProfile("n/a")
-    }
-}
+//     // if only one result, update into that. if multiple, update into the closest match
+//     if (searchResults.length >= 1) {
+//         // call update profile
+//         updateProfile(searchResults[0].email)
+//     } else {
+//         updateProfile("n/a")
+//     }
+// }
 
-//if user manually clicks search icon (user search)
-searchUser.addEventListener('click', searchForUser);
+// //if user manually clicks search icon (user search)
+// searchUser.addEventListener('click', searchForUser);
 
-searchInput.addEventListener('keypress', function (event) {
-    //check if enter key is pressed
-    if (event.key === 'Enter') {
-        searchForUser();
-    }
-});
+// searchInput.addEventListener('keypress', function (event) {
+//     //check if enter key is pressed
+//     if (event.key === 'Enter') {
+//         searchForUser();
+//     }
+// });
 
 // searchInput.addEventListener('input', function () {
 //     var input = this.value.toLowerCase();
@@ -303,52 +309,111 @@ searchInput.addEventListener('keypress', function (event) {
 //     });
 // });
 
-fetch('/userNames')
-    .then(response => response.json())
-    .then(userNames => {
-        // init autocomplete
-        const autocomplete = new Awesomplete('#user-search', { list: userNames });
-
-        // if input change
-        document.getElementById('user-search').addEventListener('input', function() {
-            // update autocomplete list based on input 
-            autocomplete.list = userNames.filter(name =>
-                name.toLowerCase().includes(this.value.toLowerCase())
-            );
-        });
-    })
-    .catch(error => console.error('Error fetching user names:', error));
-
 // --USER PROFILE DELETE-- //
-const deleteProfileMenu = document.querySelector(".delete-profile-yesno");
-const deleteProfile = document.querySelector(".delete-profile");
-const deleteProfileProceed = document.querySelector("#yes-delete");
-const deleteProfileCancel = document.querySelector("#no-delete");
-const deleteProfileX = document.querySelector(".close-delete-profile-yesno")
 
-deleteProfile.addEventListener('click', () => {
+// const deleteProfileBtn = document.querySelector(".delete-profile");
+// const deleteProfileProceed = document.querySelector("#yes-delete");
+// const deleteProfileCancel = document.querySelector("#no-delete");
+// const deleteProfileX = document.querySelector(".close-delete-profile-yesno")
+
+function deleteProfile() {
+    const profileEmail = document.getElementById('profile-email').textContent;
+    // AJAX req to delete profile
+    fetch('/delete-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: profileEmail }) // pass email of user to be deleted (key)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete profile');
+        }
+        // action after deletion
+        viewPage('');
+    })
+    .catch(error => {
+        console.error('Error deleting profile:', error);
+    });
+
+}
+
+function deleteProfileBtnClick () {
+    // confirm if the user wants to delete the profile
+    const deleteProfileMenu = document.querySelector(".delete-profile-yesno");
     deleteProfileMenu.classList.add('popup');
-}); 
-deleteProfileProceed.addEventListener('click', () => {
-    const profileEmail = document.getElementById("profile-email");
+}
+
+// function deleteProfile() {
+//     const profileEmail = document.getElementById("profile-email");
 
 
-    delete userData[profileEmail.textContent];
+//     delete userData[profileEmail.textContent];
+//     deleteProfileMenu.classList.remove('popup');
+//     clearSearchInput();
+//     searchUser.dispatchEvent(new Event('click'));
+
+//     // window.location.assign('index.html'); //goes back to main dashboard
+// }
+
+function cancelDeleteProfile() {
+    const deleteProfileMenu = document.querySelector(".delete-profile-yesno");
     deleteProfileMenu.classList.remove('popup');
-    clearSearchInput();
-    searchUser.dispatchEvent(new Event('click'));
+}
 
-    // window.location.assign('index.html'); //goes back to main dashboard
-}); 
+function searchQuery() {
+    const searchInput = document.getElementById('user-search');
+    const inputData = searchInput.value;
+    console.log(inputData);
+    console.log(JSON.stringify({data: inputData}));
 
-deleteProfileCancel.addEventListener('click', () => {
-    deleteProfileMenu.classList.remove('popup');
-}); 
+    // AJAX req for search
+    fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data: inputData})
+    })
 
-deleteProfileX.addEventListener('click', () => {
-    deleteProfileMenu.classList.remove('popup');
-}); 
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch search suggestions');
+        }
+        return response.json(); // Parse JSON here
+    })
+    .then(searchSuggestions => {
+        // handle response from server if needed
+        console.log('Response from server:', searchSuggestions);
+        updateSuggestions(searchSuggestions);
+    })
+    .catch(error => {
+        console.error('Error sending data to server:', error);
+    });
+}
 
-module.exports = {
-    updateProfile: updateProfile
-};
+function updateSuggestions(suggestions) {
+    const autocompleteContainer = document.getElementById('autocomplete-user-search');
+    autocompleteContainer.innerHTML = ''; // clear previous suggestions
+    
+    if (!Array.isArray(suggestions)) {
+        console.error('Received invalid suggestions:', suggestions);
+        return;
+    }
+    
+    suggestions.forEach(suggestion => {
+        const suggestionItem = document.createElement('div');
+        suggestionItem.classList.add('autocomplete-item');
+        suggestionItem.innerHTML = `
+            <img src="${suggestion.pfpURL}" alt="${suggestion.name}">
+            <span>${suggestion.name}</span>
+        `;
+        suggestionItem.addEventListener('click', function() {
+            // navigate to the user's profile page when clicked
+            viewPage('profile/' + suggestion.name);
+        });
+        autocompleteContainer.appendChild(suggestionItem);
+    });
+}
+
