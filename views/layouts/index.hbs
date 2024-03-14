@@ -2,18 +2,18 @@
 <html>
     <head>
         <title>Lab Reservation System</title>
-        <link rel="stylesheet" type="text/css" href="./style.css">
+        <link rel="stylesheet" type="text/css" href="/style.css">
     </head>
 
     <body>
         <div id="my-side-panel" class="side-panel">
             <div class="main-icon">
-                <a onclick="viewPage('')"><img src="images/icons/computer.png" alt="CLOCK Group icons created by Freepik - Flaticon"></a>
+                <a onclick="viewPage('')"><img src="/images/icons/computer.png" alt="CLOCK Group icons created by Freepik - Flaticon"></a>
             </div>
 
             <div class="side-panel-content" id="calendar-content">
                 <div class="side-panel-content-options">
-                    <img src="images/icons/calendar.png" alt="CALENDAR Group icons created by Freepik - Flaticon"><p>Calendar</p>
+                    <img src="/images/icons/calendar.png" alt="CALENDAR Group icons created by Freepik - Flaticon"><p>Calendar</p>
                 </div>
                 <ul>
                     <li><a onclick ="viewPage('vsa')">Search</a></li>
@@ -22,7 +22,7 @@
             </div>
             <div class="side-panel-content" id="reserve-content">
                 <div class="side-panel-content-options">
-                    <img src="images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
+                    <img src="/images/icons/reserve.png" alt="RESERVE Group icons created by Freepik - Flaticon"><p>Reserve</p>
                 </div>
                 <ul>
                     <li><a onclick ="viewPage('seereservation')">See Reservations</a></li>
@@ -31,7 +31,7 @@
             </div>
             <div class="side-panel-content" id="profile-content">
                 <div class="side-panel-content-options">
-                    <img src="images/icons/user.png" alt="USER Group icons created by Freepik - Flaticon" class="user-icon"><p>Profile</p>
+                    <img src="/images/icons/user.png" alt="USER Group icons created by Freepik - Flaticon" class="user-icon"><p>Profile</p>
                 </div>
                 <ul> 
                     <li><a onclick ="viewPage('profile')">View Profile</a></li>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="wrap">
-                <img src="images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
+                <img src="/images/icons/close.png" class="close-login" alt="CLOSE Group icons created by Freepik - Flaticon">
 
                 <div class="login-form login">
                     <h3>Login Portal</h3>
@@ -53,13 +53,13 @@
                             <div class="input-field">
                                 <input type="email" placeholder="" id="login-email" required>
                                 <label>Email</label>
-                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                                <img src="/images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
                             </div>
 
                             <div class="input-field">
                                 <input type="password" placeholder="" id="login-pw" required>
                                 <label>Password</label>
-                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                                <img src="/images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
 
                             <button type="submit" class="btn">Login</button>
@@ -72,35 +72,35 @@
                 <div class="login-form reg-as">
                     <h3>Register as:</h3>
                         <div class="reg-as-option" id="reg-as-student" onclick="registerAs('s')">
-                            <img src="images/icons/student.png" alt="STUDENT Group icons created by Freepik - Flaticon">
+                            <img src="/images/icons/student.png" alt="STUDENT Group icons created by Freepik - Flaticon">
                             <p>Student</p>
                         </div>
 
                         <div class="reg-as-option" id="reg-as-tech" onclick="registerAs('t')">
-                            <img src="images/icons/technician.png" alt="TECHNICIAN Group icons created by Freepik - Flaticon">
+                            <img src="/images/icons/technician.png" alt="TECHNICIAN Group icons created by Freepik - Flaticon">
                             <p>Lab Technician</p>
                         </div>
                 </div>
 
                 <div class="login-form register">
                     <h3>Registration <br> Portal</h3>
-                        <form action="#">
+                        <form action="#" id="registration-form">
                             <div class="input-field">
                                 <input type="email" placeholder="" id="reg-email" required>
                                 <label>Email</label>
-                                <img src="images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
+                                <img src="/images/icons/mail.png" alt="MAIL Group icons created by Freepik - Flaticon">
                             </div>
 
                             <div class="input-field">
                                 <input type="password" placeholder="" id="reg-pw" required>
                                 <label>Password</label>
-                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                                <img src="/images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
                             
                             <div class="input-field">
                                 <input type="password" placeholder="" id="reg-confirm-pw" required>
                                 <label>Confirm Password</label>
-                                <img src="images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                                <img src="/images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
                             </div>
                             <button type="submit" class="btn">Register</button>
                             <div class="login">
@@ -112,7 +112,7 @@
             {{{body}}}
         </div> 
         
-        <script src="./script.js"></script>
+        <script src="/script.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
 
     </body>
