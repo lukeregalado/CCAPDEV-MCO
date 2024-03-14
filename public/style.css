@@ -913,3 +913,170 @@
     color: var(--main);
 }
 
+.labPopup{
+    position: relative;
+    display: none;
+    overflow: hidden;
+    width: 800px;
+    height: 60vh;
+    background-color: #F7E7CE;
+    margin-left: 800px;
+    margin-top: 80px;
+    border-radius: 5px;
+    z-index: 98;
+    display: flex;
+    flex-direction: column;
+
+    transition: .5s ease;
+}
+
+.labPopupTitle{
+    height: 10%;
+    text-align: center;
+    font-family: Louis;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.statusList{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.seats{
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.seats::before{
+    content: "";
+    position: absolute;
+    margin-bottom: 210px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 220px;
+    height: 7px;
+    background: white;
+    border-radius: 3mm 3mm 0 0;
+    border-bottom: 0.3mm solid rgb(180, 180, 180);
+}
+
+.status{
+    position: relative;
+}
+
+.status::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -25px;
+    transform: translate(0, -50%);
+    width: 20px;
+    height: 20px;
+    background: rgb(255, 255, 255);
+    outline: 0.2mm solid rgb(120, 120, 120);
+    border-radius: 0.3mm;
+}
+
+.status:nth-child(2):before{
+    background: rgb(180, 180, 180);
+    outline: none;
+}
+
+.status:nth-child(3):before{
+    background: #00703C;
+    outline: none;
+}
+
+.allSeats{
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.seat{
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 0.5mm;
+    outline: 0.3mm solid rgb(180, 180, 180);
+    cursor: pointer;
+}
+
+.allSeats input{
+    display: none;
+}
+
+.allSeats input:checked + label{
+    background: #00703C;
+    outline: none;
+}
+
+.seat.booked{
+    background: rgb(180, 180, 180);
+    outline: none;
+}
+
+.labPopup input{
+    display: none;
+}
+
+.reservationTable{
+    align-items: center;
+    text-align: center;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: #F7E7CE;
+}
+
+.reservationTable th, tr, td{
+    border: 1px solid black;
+}
+
+.DTRes,
+.DTReq{
+    width: 300px;
+}
+
+.reservationTable th{
+    height: 50px;
+}
+
+.reservationTable td{
+    width: 200px;
+    height: 50px;
+}
+
+#reserve-button-cont{
+    align-items: center;
+    justify-content: center;
+    padding-left: 300px;
+}
+
+#reserve-button{
+    height: 50px;
+    width: 100px;
+    background-color: #004225;
+    color: white;
+    border-radius: 2mm;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+#reserve-button:hover{
+    background-color: #00703C;
+}
+
