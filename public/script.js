@@ -108,6 +108,7 @@ document.getElementById('registration-form').addEventListener('submit', function
             } else {
                 // registration fail
                 console.error('Registration failed');
+                alert('An account with this email already exists!');
             }
         })
         .catch(error => {

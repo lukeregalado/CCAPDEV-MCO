@@ -42,9 +42,9 @@ server.post('/register', (req, res) => {
          email: username,
          description: "This user hasn't added a description yet."
       }
+      console.log('add', userData);
+      res.status(200).send('Profile registered successfully'); 
   }
-   console.log('add', userData);
-   res.status(200).send('Profile registered successfully');
 });
 
 
@@ -176,46 +176,46 @@ let reservations = [
 ];
 
 let userData = {
-   // "im_nayeon@dlsu.edu.ph": {
-   //    name: "Im Na-yeon",
-   //    password: "1234",
-   //    pos: "student",
-   //    pfpURL: "/images/sample-users/Im Na-yeon",
-   //    email: "im_nayeon@dlsu.edu.ph",
-   //    description: "Student at DLSU University. Lead vocalist of TWICE."
-   // },
-   // "yoo_jeongyeon@dlsu.edu.ph": {
-   //    name: "Yoo Jeong-yeon",
-   //    password: "1234",
-   //    pos: "student",
-   //    pfpURL: "/images/sample-users/Yoo Jeong-yeon",
-   //    email: "yoo_jeongyeon@dlsu.edu.ph",
-   //    description: "Lab Technician at a certain DLSU Lab. Main vocalist of TWICE."
-   // },
-   // "hirai_momo@dlsu.edu.ph": {
-   //    name: "Hirai Momo",
-   //    password: "1234",
-   //    pos: "student",
-   //    pfpURL: "/images/sample-users/Hirai Momo",
-   //    email: "hirai_momo@dlsu.edu.ph",
-   //    description: "Lab Technician at a certain DLSU Lab. Main dancer of TWICE."
-   // },
-   // "minatozaki_sana@dlsu.edu.ph": {
-   //    name: "Minatozaki Sana",
-   //    password: "1234",
-   //    pos: "student",
-   //    pfpURL: "/images/sample-users/Minatozaki Sana",
-   //    email: "minatozaki_sana@dlsu.edu.ph",
-   //    description: "Lab Technician at a certain DLSU Lab. Lead vocalist of TWICE."
-   // },
-   // "park_jihyo@dlsu.edu.ph": {
-   //    name: "Park Ji-hyo",
-   //    password: "1234",
-   //    pos: "tech",
-   //    pfpURL: "/images/sample-users/Park Ji-hyo",
-   //    email: "park_jihyo@dlsu.edu.ph",
-   //    description: "Student at DLSU University. Main vocalist and leader of TWICE."
-   // }
+   "im_nayeon@dlsu.edu.ph": {
+      name: "Im Na-yeon",
+      password: "1234",
+      pos: "student",
+      pfpURL: "/images/sample-users/Im Na-yeon",
+      email: "im_nayeon@dlsu.edu.ph",
+      description: "Student at DLSU University. Lead vocalist of TWICE."
+   },
+   "yoo_jeongyeon@dlsu.edu.ph": {
+      name: "Yoo Jeong-yeon",
+      password: "1234",
+      pos: "student",
+      pfpURL: "/images/sample-users/Yoo Jeong-yeon",
+      email: "yoo_jeongyeon@dlsu.edu.ph",
+      description: "Lab Technician at a certain DLSU Lab. Main vocalist of TWICE."
+   },
+   "hirai_momo@dlsu.edu.ph": {
+      name: "Hirai Momo",
+      password: "1234",
+      pos: "student",
+      pfpURL: "/images/sample-users/Hirai Momo",
+      email: "hirai_momo@dlsu.edu.ph",
+      description: "Lab Technician at a certain DLSU Lab. Main dancer of TWICE."
+   },
+   "minatozaki_sana@dlsu.edu.ph": {
+      name: "Minatozaki Sana",
+      password: "1234",
+      pos: "student",
+      pfpURL: "/images/sample-users/Minatozaki Sana",
+      email: "minatozaki_sana@dlsu.edu.ph",
+      description: "Lab Technician at a certain DLSU Lab. Lead vocalist of TWICE."
+   },
+   "park_jihyo@dlsu.edu.ph": {
+      name: "Park Ji-hyo",
+      password: "1234",
+      pos: "tech",
+      pfpURL: "/images/sample-users/Park Ji-hyo",
+      email: "park_jihyo@dlsu.edu.ph",
+      description: "Student at DLSU University. Main vocalist and leader of TWICE."
+   }
 };
 
 server.listen(port);

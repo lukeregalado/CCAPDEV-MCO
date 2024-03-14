@@ -689,6 +689,8 @@
 
 .autocomplete-item span {
     position: absolute;
+    width: 235px;
+    overflow: hidden;
     padding: 10px;
 }
 
