@@ -8,26 +8,14 @@
                 <th class="DTRes">Date & time of Reservation</th>
             </tr>
 
-            <tr>
-                <td>22</td>
-                <td>GK304B</td>
-                <td>02/12/2023 09:14</td>
-                <td>02/15/2023 14:30</td>
-            </tr>
-
-            <tr>
-                <td>37</td>
-                <td>GK301A</td>
-                <td>02/16/2023 06:01</td>
-                <td>02/29/2023 11:00</td>
-            </tr>
-
-            <tr>
-                <td>02</td>
-                <td>GK304A</td>
-                <td>02/13/2023 20:43</td>
-                <td>02/15/2023 09:15</td>
-            </tr>
+            {{#each reservations}}
+                <tr>
+                    <td>{{seatNum}}</td>
+                    <td>{{lab}}</td>
+                    <td>{{dateAndTimeReq}}</td>
+                    <td>{{dateAndTimeRes}}</td>
+                </tr>
+            {{/each}}
         </table>
     </div>
 </div>

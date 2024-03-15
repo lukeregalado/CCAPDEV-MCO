@@ -5,7 +5,7 @@ const path = require('path');
 
 const port = process.env.port | 3000;
 
-constbodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 server.use(express.json()); 
 server.use(express.urlencoded({ extended: true}));
 
@@ -157,11 +157,11 @@ server.get('/vsa', function(req, res){
 });
 
 server.get('/reserveslot', function(req, res){
-   res.render('reserveslot', {layout : 'index'});
+   res.render('reserveslot', {layout : 'index', seatsMap : seatsMap});
 });
 
 server.get('/seereservation', function(req, res){
-   res.render('seereservation', {layout : 'index'});
+   res.render('seereservation', {layout : 'index', reservations : reservationsOnPage});
 });
 
 /*
@@ -222,236 +222,234 @@ let seatsMap = {
    "s1": {
       class: "seat",
       id: "s1",
-      third: false
+      br: false
    },
    "s2": {
       class: "seat",
       id: "s2",
-      third: false
+      br: false
    },
    "s3": {
       class: "seat booked",
       id: "s3",
-      third: true
+      br: true
    },
    "s4": {
       class: "seat booked",
       id: "s4",
-      third: false
+      br: false
    },
    "s5": {
       class: "seat booked",
       id: "s5",
-      third: false
+      br: false
    },
    "s6": {
       class: "seat",
       id: "s6",
-      third: true
+      br: true
    },
    "s7": {
       class: "seat booked",
       id: "s7",
-      third: false
+      br: false
    },
    "s8": {
       class: "seat",
       id: "s8",
-      third: false
+      br: false
    },
    "s9": {
       class: "seat",
       id: "s9",
-      third: true
+      br: false
    },
    "s10": {
       class: "seat",
       id: "s10",
-      third: false
+      br: false
    },
    "s11": {
       class: "seat booked",
       id: "s11",
-      third: false
+      br: false
    },
    "s12": {
       class: "seat",
       id: "s12",
-      third: true
+      br: true
    },
    "s13": {
       class: "seat booked",
       id: "s13",
-      third: false
+      br: false
    },
    "s14": {
-      class: "s booked",
+      class: "seat booked",
       id: "s14",
-      third: false
+      br: false
    },
    "s15": {
-      class: "s",
+      class: "seat",
       id: "s15",
-      third: true
+      br: true
    },
    "s16": {
-      class: "s",
+      class: "seat",
       id: "s16",
-      third: false
+      br: false
    },
    "s17": {
-      class: "s",
+      class: "seat",
       id: "s17",
-      third: false
+      br: false
    },
    "s18": {
-      class: "s booked",
+      class: "seat booked",
       id: "s18",
-      third: true
+      br: false
    },
    "s19": {
-      class: "s booked",
+      class: "seat booked",
       id: "s19",
-      third: false
+      br: false
    },
    "s20": {
-      class: "s",
+      class: "seat",
       id: "s20",
-      third: false
+      br: false
    },
    "s21": {
-      class: "s",
+      class: "seat",
       id: "s21",
-      third: true
+      br: true
    },
    "s22": {
-      class: "s",
+      class: "seat",
       id: "s22",
-      third: false
+      br: false
    },
    "s23": {
-      class: "s",
+      class: "seat",
       id: "s23",
-      third: false
+      br: false
    },
    "s24": {
-      class: "s booked",
+      class: "seat booked",
       id: "s24",
-      third: true
+      br: true
    },
    "s25": {
-      class: "s booked",
+      class: "seat booked",
       id: "s25",
-      third: false
+      br: false
    },
    "s26": {
-      class: "s booked",
+      class: "seat booked",
       id: "s26",
-      third: false
+      br: false
    },
    "s27": {
-      class: "s booked",
+      class: "seat booked",
       id: "s27",
-      third: true
+      br: false
    },
    "s28": {
-      class: "s booked",
+      class: "seat booked",
       id: "s28",
-      third: false
+      br: false
    },
    "s29": {
-      class: "s",
+      class: "seat",
       id: "s29",
-      third: false
+      br: false
    },
    "s30": {
-      class: "s",
+      class: "seat",
       id: "s30",
-      third: true
+      br: true
    },
    "s31": {
-      class: "s",
+      class: "seat",
       id: "s31",
-      third: false
+      br: false
    },
    "s32": {
-      class: "s",
+      class: "seat",
       id: "s32",
-      third: false
+      br: false
    },
    "s33": {
-      class: "s",
+      class: "seat",
       id: "s33",
-      third: true
+      br: true
    },
    "s34": {
-      class: "s",
+      class: "seat",
       id: "s34",
-      third: false
+      br: false
    },
    "s35": {
-      class: "s",
+      class: "seat",
       id: "s35",
-      third: false
+      br: false
    },
    "s36": {
-      class: "s",
+      class: "seat",
       id: "s36",
-      third: true
+      br: false
    },
    "s37": {
-      class: "s booked",
+      class: "seat booked",
       id: "s37",
-      third: false
+      br: false
    },
    "s38": {
-      class: "s booked",
+      class: "seat booked",
       id: "s38",
-      third: false
+      br: false
    },
    "s39": {
-      class: "s",
+      class: "seat",
       id: "s39",
-      third: true
+      br: true
    },
    "s40": {
-      class: "s",
+      class: "seat",
       id: "s40",
-      third: false
+      br: false
    },
    "s41": {
-      class: "s",
+      class: "seat",
       id: "s41",
-      third: false
+      br: false
    },
    "s42": {
-      class: "s",
+      class: "seat",
       id: "s42",
-      third: true
+      br: true
    },
    "s43": {
-      class: "s booked",
+      class: "seat booked",
       id: "s43",
-      third: false
+      br: false
    },
    "s44": {
-      class: "s booked",
+      class: "seat booked",
       id: "s44",
-      third: false
+      br: false
    },
    "s45": {
-      class: "s",
+      class: "seat",
       id: "s45",
-      third: true
+      br: false
     }
 };
 
-handlebars.registerHelper( 'eachInMap', function ( map, block ) {
-   var out = '';
-   Object.keys( map ).map(function( prop ) {
-      out += block.fn( {key: prop, value: map[ prop ]} );
-   });
-   return out;
-} );
+let reservationsOnPage = [
+   {seatNum: "22", lab: "GK304B", dateAndTimeReq: "02/12/2023 09:14", dateAndTimeRes: "02/15/2023 14:30"},
+   {seatNum: "37", lab: "GK301A", dateAndTimeReq: "02/16/2023 06:01", dateAndTimeRes: "02/29/2023 11:00"},
+   {seatNum: "02", lab: "GK304A", dateAndTimeReq: "02/13/2023 20:43	", dateAndTimeRes: "02/15/2023 09:15"}
+]
 
 server.listen(port);

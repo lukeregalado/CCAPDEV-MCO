@@ -47,13 +47,13 @@
                                 <div class="status">Selected</div>
                             </div>
                             <div class="allSeats">
-                                    {{#eachInMap seatsMap}}
-                                        <input type="radio" name="slot" id={{id}}>
-                                        <label for={{id}} class={{class}}></label>
-                                        {{#if third}}
+                                    {{#each seatsMap}}
+                                        <input type="radio" name="slot" id="{{id}}">
+                                        <label for="{{id}}" class="{{class}}"></label>
+                                        {{#if br}}
                                             <br>
                                         {{/if}}
-                                    {{/eachInMap}} 
+                                    {{/each}} 
                             </div>
                         </div>
 
