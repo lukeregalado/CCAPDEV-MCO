@@ -1,3 +1,5 @@
+//Authors: Luke Regalado, Miguel Guerrero, Ilan Templa.
+
 //Initials
 const express = require('express');
 const server = express();

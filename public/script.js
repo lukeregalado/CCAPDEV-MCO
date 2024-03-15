@@ -1,3 +1,5 @@
+//Authors: Luke Regalado, Miguel Guerrero, Ilan Templa.
+
 const wrap = document.querySelector('.wrap');
 const login = document.querySelector('.login-link');
 const register = document.querySelector('.register-link');
