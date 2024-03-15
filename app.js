@@ -153,7 +153,10 @@ function filterUserData(inputString) {
 }
 
 server.get('/vsa', function(req, res){
-   res.render('vsa', {layout : 'index'});
+   res.render('vsa', {
+      layout : 'index',
+      seatsMap: seatsMap});
+   console.log(seatsMap);
 });
 
 server.get('/reserveslot', function(req, res){

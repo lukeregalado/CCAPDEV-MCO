@@ -7,6 +7,13 @@
             <th>Status</th>
             <th>Reservee</th>
         </tr>
+        {{#each seatsMap}}
+         <tr>
+            <td>{{@key}}</td>
+            <td>{{this.class}}</td>
+            <td>None</td>
+        </tr>
+        {{/each}}
     </table>
 </div>
 <input  type ="checkbox" 
