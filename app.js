@@ -197,7 +197,7 @@ server.post('/logout', async (req, res) => {
 <================ PROFILE ================>
 */
 server.get('/profile', function(req, res) {
-   userList.findOne({email: "im_nayeon@dlsu.edu.ph"}).lean()
+   userList.findOne({}).lean()
    .then(function (user) {
       renderProfilePage(req, res, null, user);
    })
