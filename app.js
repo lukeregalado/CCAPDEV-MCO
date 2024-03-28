@@ -2,13 +2,18 @@
 
 //Initials
 const express = require('express');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const server = express();
+const multer = require('multer');
 const path = require('path');
 
 const port = process.env.port | 3000;
 
+
 const bodyParser = require('body-parser');
 server.use(express.json()); 
+server.use(cookieParser());
 server.use(express.urlencoded({ extended: true}));
 
 const handlebars = require('express-handlebars');
@@ -18,6 +23,79 @@ server.engine('hbs', handlebars.engine({
 }));
 
 server.use(express.static(path.join(__dirname, 'public')));
+
+
+/*
+<================ multer (file uploads) ================>
+*/
+const storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+       // dir where files will be saved
+       cb(null, 'public/images/uploads/'); 
+   },
+   filename: function (req, file, cb) {
+       // filename
+       cb(null, file.originalname); 
+   }
+});
+
+const upload = multer({ storage: storage });
+
+server.post('/uploadProfilePicture', upload.single('photo'), async (req, res) => {
+   console.log(req.file.path)
+   const pfpURL = req.file.path.replace(/\\/g, '/').replace('public', ''); //reverses all slashes
+   const userEmail = req.body.email;
+
+   const updateUserPicture = await userList.findOneAndUpdate(
+      { email: userEmail }, //find by email
+      { pfpURL: pfpURL }, //update url
+      { new: true } //return updated document
+   ).lean();
+
+   res.sendStatus(200); 
+});
+
+// server.post('/edit-profile', async (req, res) => {
+//    try {
+//       const userEmail = req.body.email;
+//       const username = req.body.name;
+//       const userDesc = req.body.description;
+
+//       const updatedUser = await userList.findOneAndUpdate(
+//          { email: userEmail }, // find by email
+//          { name: username, description: userDesc }, // update username and desc
+//          { new: true } // return updated document
+//       );
+
+//       if (updatedUser) {
+//          console.log(`User with email ${userEmail} edited successfully.`);
+//          res.status(200).send('Profile edited successfully');
+//       } else {
+//          console.log(`User with email ${userEmail} not found.`);
+//          res.status(404).send('User not found');
+//       }
+//    } catch (error) {
+//       console.error('Error editing user profile:', error);
+//       res.status(500).send('An error occurred while editing user profile');
+//    }
+// });
+
+
+/*
+<================ MONGODB ================>
+*/
+mongoose.connect('mongodb://localhost:27017/MCOdb')
+const userSchema = new mongoose.Schema({
+   name: String,
+   password: String,
+   pos: String,
+   pfpURL: String,
+   email: String,
+   description: String
+})
+
+const userList = mongoose.model("users", userSchema)
+
 /*
 <================ MAIN CODE ================>
 */
@@ -27,131 +105,231 @@ server.get('/', function(req, res){
 });
 
 // register user
-server.post('/register', (req, res) => {
+server.post('/register', async (req, res) => {
+  try {
    const username = req.body.email;
    const userPassword = req.body.password;
    const userPosition = req.body.pos;
 
-   if (userData[username]) {
-      console.log(`User with email ${username} already exists!.`);
-      res.status(400).send('User already exists!');
-  } else {
-      userData[username] = {
-         name: username,
-         password: userPassword,
-         pos: userPosition,
-         pfpURL: "/images/sample-users/Name",
-         email: username,
-         description: "This user hasn't added a description yet."
-      }
-      console.log('add', userData);
-      res.status(200).send('Profile registered successfully'); 
-  }
+   // check if user is already existing
+   const existingUser = await userList.findOne({ email: username });
+   if (existingUser) {
+      console.log(`User with email ${username} already exists!`);
+      return res.status(400).send('User already exists!');
+   }
+
+   // create new doc
+   const newUser = new userList({
+      name: username,
+      password: userPassword,
+      pos: userPosition,
+      pfpURL: "/images/sample-users/Name",
+      email: username,
+      description: "This user hasn't added a description yet."
+   });
+
+   // add and save the new user document to the database
+   await newUser.save();
+
+   console.log('User registered successfully:', newUser);
+   res.status(200).send('Profile registered successfully');
+} catch (error) {
+   console.error('Error registering user:', error);
+   res.status(500).send('An error occurred while registering user');
+}
 });
 
+server.post('/login', async (req, res) => {
+   try {
+      const { email, password, remember } = req.body;
+
+      // check if user with email exists
+      const user = await userList.findOne({ email: email });
+
+      if (!user) {
+         // if not found
+         return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      if (password !== user.password) {
+         // if pw is incorrect
+         return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      const cookieOptions = {
+         httpOnly: true
+      };
+
+      // if remember me is checked
+      if (remember) {
+         res.cookie('user', user.email, { httpOnly: true, expires: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000)});
+      } else {
+         res.cookie('user', user.email, { httpOnly: true });
+      }
+
+      
+      // if email + pw match, respond w success
+      res.status(200).json({ name: user.name });
+
+   } catch (error) {
+       // err
+       console.error('Error during login:', error);
+       res.status(500).json({ error: 'An error occurred during login' });
+   }
+});
+
+server.post('/logout', async (req, res) => {
+   try {
+      // clear all cookies with the name "user"
+      res.clearCookie('user');
+
+      // respond with success
+      res.status(200).json({ message: 'Logged out successfully' });
+
+   } catch (error) {
+       // err
+       console.error('Error during logout:', error);
+       res.status(500).json({ error: 'An error occurred during logout' });
+   }
+});
 
 /*
 <================ PROFILE ================>
 */
 server.get('/profile', function(req, res) {
-   renderProfilePage(res, null, userData["im_nayeon@dlsu.edu.ph"]);
+   userList.findOne({email: "im_nayeon@dlsu.edu.ph"}).lean()
+   .then(function (user) {
+      renderProfilePage(req, res, null, user);
+   })
+   .catch(function (err) {
+      console.log(err)
+   })
 });
-
 
 // search user
 server.get('/profile/:username', (req, res) => {
    const username = req.params.username;
-   // get user data given email
-   const userInfo = userData[findUserEmailByName(username)]; 
+   const loggedInUser = req.cookies.user;
+   const loginBool = loggedInUser !== null;
    
    console.log('Redirecting to ', username, '\'s profile...');
    
-   if (userInfo) {
-      // render the profile page with userData
-      renderProfilePage(res, null, userInfo);
-   } else {
-      // handle error
+   const regex = RegExp(username, 'i');
+
+   // get user data given email
+   userList.findOne({name: { $regex: regex }}).lean()
+   .then(function (user) {
+      renderProfilePage(req, res, null, user)
+   })
+   .catch(function (err) {
       res.status(404).send('User not found');
+      console.log(err)
+   })
+});
+
+server.post('/search', async (req, res) => {
+   try {
+       const inputData = req.body.data;
+       console.log('Received live search input:', inputData);
+
+       const searchSuggestions = await filterUserData(inputData);
+       
+       res.status(200).json(searchSuggestions);
+   } catch (error) {
+       console.error('Error processing search request:', error);
+       res.status(500).json({ error: 'An error occurred while processing the search request' });
    }
 });
+
 
 // edit user
-server.post('/edit-profile', (req, res) => {
-   const userEmail = req.body.email;
-   const username = req.body.name;
-   const userDesc = req.body.description;
-   if (userData[userEmail]) {
-      userData[userEmail].name = username;
-      userData[userEmail].description = userDesc;
-      console.log(`User with email ${userEmail} edited successfully.`);
-  } else {
-      console.log(`User with email ${userEmail} not found.`);
-  }
-   res.status(200).send('Profile edited successfully');
+server.post('/edit-profile', async (req, res) => {
+   try {
+      const userEmail = req.body.email;
+      const username = req.body.name;
+      const userDesc = req.body.description;
+
+      const updatedUser = await userList.findOneAndUpdate(
+         { email: userEmail }, // find by email
+         { name: username, description: userDesc }, // update username and desc
+         { new: true } // return updated document
+      );
+
+      if (updatedUser) {
+         console.log(`User with email ${userEmail} edited successfully.`);
+         res.status(200).send('Profile edited successfully');
+      } else {
+         console.log(`User with email ${userEmail} not found.`);
+         res.status(404).send('User not found');
+      }
+   } catch (error) {
+      console.error('Error editing user profile:', error);
+      res.status(500).send('An error occurred while editing user profile');
+   }
 });
 
-server.post('/search', (req, res) => {
-   const inputData = req.body.data;
-   console.log('Received live search input:', inputData);
 
-   const searchSuggestions = filterUserData(inputData);
- 
-   res.status(200).json(searchSuggestions);
-});
 
 // delete user
-server.post('/delete-profile', (req, res) => {
-   const userEmail = req.body.email;
-   if (userData[userEmail]) {
-      // delete the user from the userData object
-      delete userData[userEmail];
-      console.log(`User with email ${userEmail} deleted successfully.`);
-  } else {
-      console.log(`User with email ${userEmail} not found.`);
-  }
-   res.status(200).send('Profile deleted successfully');
-});
+server.post('/delete-profile', async (req, res) => {
+   try {
+      const userEmail = req.body.email;
+      const regex = RegExp(userEmail, 'i');
+      const user = await userList.findOneAndDelete({ email: userEmail });
 
-server.post('/search', (req, res) => {
-   const inputData = req.body.data;
-   console.log('Received live search input:', inputData);
-
-   const searchSuggestions = filterUserData(inputData);
- 
-   res.status(200).json(searchSuggestions);
-});
-
-
-// helper function for searching userData given name
-function findUserEmailByName(name) {
-   for (const [email, userInfo] of Object.entries(userData)) {
-       if (userInfo.name === name) {
-           return email; // return email
-       }
+      if (user) {
+         console.log(`User with email ${userEmail} deleted successfully.`);
+         res.status(200).send('Profile deleted successfully');
+      } else {
+         console.log(`User with email ${userEmail} not found.`);
+         res.status(404).send('User not found');
+      }
+   } catch (error) {
+      console.error('Error deleting user profile:', error);
+      res.status(500).send('An error occurred while deleting user profile');
    }
-   // if no match
-   return null;
-}
+});
 
 // helper function for rendering profile page
-function renderProfilePage(res, suggestions, userInfo) {
-   res.render('profile', {
-       layout: 'index',
-       reservations: reservations,
-       userData: userInfo,
-       suggestions: suggestions
-   });
+function renderProfilePage(req, res, suggestions, userInfo) {
+   const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+   
+   console.log("Rendering profile page...");
+
+   if (loggedInUser && loggedInUser === userInfo.email) {
+      // render the profile page with the delete button visible
+      res.render('profile', { 
+         layout: 'index',
+         loggedin: loggedin,
+         reservations: reservations,
+         suggestions: null,
+         userData: userInfo,
+         owner: true});
+   } else {
+      // render the profile page without the delete button
+      res.render('profile', { 
+         layout: 'index',
+         loggedin: loggedin,
+         reservations: reservations,
+         suggestions: null,
+         userData: userInfo ,
+         owner: false});
+   }
 }
 
 // helper function for user search
-function filterUserData(inputString) {
-   const filteredUsers = [];
-   for (const [key, value] of Object.entries(userData)) {
-       if (value.name.toLowerCase().includes(inputString.toLowerCase())) {
-            filteredUsers.push({ name: value.name, pfpURL: value.pfpURL, email: value.email });
-        };
+async function filterUserData(inputString) {
+   try {
+       const regex = new RegExp(inputString, 'i'); 
+       const filteredUsers = await userList.find({
+           name: { $regex: regex } //search for db with name: userInput
+       }).select('name pfpURL email'); //select necessary fields to display
+       return filteredUsers;
+   } catch (error) {
+       console.error('Error filtering user data:', error);
+       throw error; //err
    }
-   return filteredUsers;
 }
 
 server.get('/vsa', function(req, res){
@@ -179,49 +357,6 @@ let reservations = [
    { room: "Room GK402", day: "Wednesday", time: "2:00 PM - 4:00 PM" },
    { room: "Room GK502", day: "Wednesday", time: "2:00 PM - 4:00 PM" }
 ];
-
-let userData = {
-   "im_nayeon@dlsu.edu.ph": {
-      name: "Im Na-yeon",
-      password: "1234",
-      pos: "student",
-      pfpURL: "/images/sample-users/Im Na-yeon",
-      email: "im_nayeon@dlsu.edu.ph",
-      description: "Student at DLSU University. Lead vocalist of TWICE."
-   },
-   "yoo_jeongyeon@dlsu.edu.ph": {
-      name: "Yoo Jeong-yeon",
-      password: "1234",
-      pos: "student",
-      pfpURL: "/images/sample-users/Yoo Jeong-yeon",
-      email: "yoo_jeongyeon@dlsu.edu.ph",
-      description: "Lab Technician at a certain DLSU Lab. Main vocalist of TWICE."
-   },
-   "hirai_momo@dlsu.edu.ph": {
-      name: "Hirai Momo",
-      password: "1234",
-      pos: "student",
-      pfpURL: "/images/sample-users/Hirai Momo",
-      email: "hirai_momo@dlsu.edu.ph",
-      description: "Lab Technician at a certain DLSU Lab. Main dancer of TWICE."
-   },
-   "minatozaki_sana@dlsu.edu.ph": {
-      name: "Minatozaki Sana",
-      password: "1234",
-      pos: "student",
-      pfpURL: "/images/sample-users/Minatozaki Sana",
-      email: "minatozaki_sana@dlsu.edu.ph",
-      description: "Lab Technician at a certain DLSU Lab. Lead vocalist of TWICE."
-   },
-   "park_jihyo@dlsu.edu.ph": {
-      name: "Park Ji-hyo",
-      password: "1234",
-      pos: "tech",
-      pfpURL: "/images/sample-users/Park Ji-hyo",
-      email: "park_jihyo@dlsu.edu.ph",
-      description: "Student at DLSU University. Main vocalist and leader of TWICE."
-   }
-};
 
 let seatsMap = {
    "s1": {

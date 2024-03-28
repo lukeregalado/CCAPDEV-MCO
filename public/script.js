@@ -4,8 +4,10 @@ const wrap = document.querySelector('.wrap');
 const login = document.querySelector('.login-link');
 const register = document.querySelector('.register-link');
 const registerForm = document.getElementById('registration-form');
-const openLogin = document.querySelector('.login-popup')
+const openLogin = document.querySelector('.login-popup');
+const logout = document.querySelector('logout');
 const closeLogin = document.querySelector('.close-login');
+const pfpUpload = document.getElementById('pfpFileInput');
 
 // clears all input fields
 function resetLoginRegisterFields() {
@@ -80,6 +82,39 @@ function verifyConfirmPassword () {
     return 0;
 }
 
+function logoutUser() {
+    // send POST logout req to app
+    fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            // logout successful
+            console.log('Logout successful');
+            return response.json();
+        } else {
+            // logout failed
+            console.error('Logout failed');
+            alert('Failed to logout!');
+            throw new Error('Logout failed');
+        }
+    })
+    .then(data => {
+        // back to home page
+        viewPage('');
+    })
+    .catch(error => {
+        console.error('Error during logout:', error);
+    });
+}
+
+function pfpUploadClick () {
+    pfpUpload.click();
+}
+
 document.getElementById('registration-form').addEventListener('submit', function(event) {
     event.preventDefault(); // prevent default form submission
 
@@ -119,45 +154,48 @@ document.getElementById('registration-form').addEventListener('submit', function
     }
 });
 
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // prevent default form submission
+
+    // fetch user input
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-pw').value;
+    const remember = document.getElementById('remember-me').checked;
+
+    // send login data to server
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, password: password, remember: remember})
+    })
+    .then(response => {
+        if (response.ok) {
+            // login successful
+            console.log('Login successful');
+            return response.json(); // Parse response JSON
+        } else {
+            // login fail
+            console.error('Login failed');
+            alert('Invalid email or password');
+            throw new Error('Login failed'); // Propagate error for catch block
+        }
+    })
+    .then(data => {
+        // redirect or perform action based on response data
+        viewPage('profile/' + data.name);
+    })
+    .catch(error => {
+        console.error('Error during login:', error);
+    });
+});
 
 //PAGE NAVIGATION
 
 function viewPage(page) {
     window.location.href = "/" + page;
 }
-
-const userData = {
-    "im_nayeon@dlsu.edu.ph": {
-        name: "Im Na-yeon",
-        pfpURL: "images/sample-users/Im Na-yeon",
-        email: "im_nayeon@dlsu.edu.ph",
-        description: "Student at DLSU University. Lead vocalist of TWICE."
-    },
-    "yoo_jeongyeon@dlsu.edu.ph": {
-        name: "Yoo Jeong-yeon",
-        pfpURL: "images/sample-users/Yoo Jeong-yeon",
-        email: "yoo_jeongyeon@dlsu.edu.ph",
-        description: "Lab Technician at a certain DLSU Lab. Main vocalist of TWICE."
-    },
-    "hirai_momo@dlsu.edu.ph": {
-        name: "Hirai Momo",
-        pfpURL: "images/sample-users/Hirai Momo",
-        email: "hirai_momo@dlsu.edu.ph",
-        description: "Lab Technician at a certain DLSU Lab. Main dancer of TWICE."
-    },
-    "minatozaki_sana@dlsu.edu.ph": {
-        name: "Minatozaki Sana",
-        pfpURL: "images/sample-users/Minatozaki Sana",
-        email: "minatozaki_sana@dlsu.edu.ph",
-        description: "Lab Technician at a certain DLSU Lab. Lead vocalist of TWICE."
-    },
-    "park_jihyo@dlsu.edu.ph": {
-        name: "Park Ji-hyo",
-        pfpURL: "images/sample-users/Park Ji-hyo",
-        email: "park_jihyo@dlsu.edu.ph",
-        description: "Student at DLSU University. Main vocalist and leader of TWICE."
-    }
-};
 
 const defaultProfilePicture = "images/sample-users/Name";
 
@@ -182,9 +220,7 @@ function toggleEditMode() {
         profileDescription.contentEditable = false;
         editProfile.src = '/images/icons/edit.png';
 
-        // saveChangesToServer(profileEmail.textContent, profileName.textContent, profileDescription.textContent);
-        // updateProfile(profileEmail.textContent);
-
+        //for editing the db itself
         fetch('/edit-profile', {
             method: 'POST',
             headers: {
@@ -209,26 +245,71 @@ function toggleEditMode() {
     }
 }
 
+pfpUpload.addEventListener('change', function(event) {
+    event.preventDefault(); // prevent default form submission
+
+    console.log("HI!");
+
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // send POST request to server
+    fetch('/uploadPfp', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('File uploaded successfully');
+        } else {
+            console.error('File upload failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error during file upload:', error);
+    });
+});
+
 var loadFile = function (event) {
     const profilePicture = document.getElementById("profile-picture");
     const profileEmail = document.getElementById("profile-email");
-    var image = document.getElementById("output");
+
     profilePicture.src = URL.createObjectURL(event.target.files[0]);
     userData[profileEmail.textContent].pfpURL = profilePicture.src;
 };
 
 function uploadProfilePicture(file) {
-    // Placeholder function for handling the file upload
-    // You can implement this function to handle the upload to your server and update the profile picture
+    // file upload
     console.log('Uploading profile picture:', file.name);
 
-    // Update the profile picture preview
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        const profilePicture = document.getElementById("profile-picture");
-        profilePicture.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    const profileEmail = document.getElementById("profile-email");
+    const pfpURL = document.getElementById("profile-picture");
+
+    // formdata (to hold image file)
+    const formData = new FormData();
+    formData.append('photo', file, file.name);
+    formData.append('email', profileEmail.textContent);
+
+    // send POST request to send file to server
+    fetch('/uploadProfilePicture', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            //upload successful yippieeeeee
+            console.log('Profile picture uploaded successfully');
+            pfpURL.src = '/images/uploads/' + file.name;
+        } else {
+            //upload failed
+            console.error('Profile picture upload failed');
+        }
+    })
+    .catch(error => {
+        //err
+        console.error('Error during profile picture upload:', error);
+    });
 }
 
 
@@ -240,83 +321,8 @@ function clearSearchInput () {
     document.getElementById('user-search').value = "";
 };
 
-// function searchForUser() {
-//     // fetch user input in the search bar
-//     const userInput = document.getElementById('user-search').value.trim().toLowerCase();;
-
-//     // filter data based on input
-//     const searchResults = Object.values(userData).filter(function (user) {
-//         return user.name.toLowerCase().includes(userInput);
-//     });
-
-//     // if only one result, update into that. if multiple, update into the closest match
-//     if (searchResults.length >= 1) {
-//         // call update profile
-//         updateProfile(searchResults[0].email)
-//     } else {
-//         updateProfile("n/a")
-//     }
-// }
-
-// //if user manually clicks search icon (user search)
-// searchUser.addEventListener('click', searchForUser);
-
-// searchInput.addEventListener('keypress', function (event) {
-//     //check if enter key is pressed
-//     if (event.key === 'Enter') {
-//         searchForUser();
-//     }
-// });
-
-// searchInput.addEventListener('input', function () {
-//     var input = this.value.toLowerCase();
-//     var suggestions = Object.values(userData);
-//     var autocompleteDiv = document.getElementById('autocomplete-user-search');
-
-//     //clear prev suggestion from prev searches
-//     autocompleteDiv.innerHTML = '';
-
-//     //filter -> display matching suggestions
-//     suggestions.filter(user => user.name.toLowerCase().includes(input)).forEach(function (user) {
-//         var div = document.createElement('div');
-//         div.classList.add('autocomplete-item');
-
-//         //suggestion pfp
-//         var img = document.createElement('img');
-//         img.src = user.pfpURL; //path to suggestion pfp
-//         img.alt = user.name;
-//         img.classList.add('autocomplete-img');
-//         div.appendChild(img);
-
-//         //suggestion name
-//         var span = document.createElement('span');
-//         span.textContent = user.name;
-//         div.appendChild(span);
-
-//         div.addEventListener('click', function () {
-//             //if user clicks suggestion, it will be retained in the input bar
-//             document.getElementById('user-search').value = user.name;
-//             updateProfile(user.email);
-//             autocompleteDiv.innerHTML = '';
-//         });
-
-//         autocompleteDiv.appendChild(div);   //add that div (user pfp + name)
-//     });
-
-//     //if user clicks away, removes display
-//     document.addEventListener("click", function (event) {
-//         if (!event.target.closest(".search-user")) {
-//             autocompleteDiv.innerHTML = '';
-//         }
-//     });
-// });
 
 // --USER PROFILE DELETE-- //
-
-// const deleteProfileBtn = document.querySelector(".delete-profile");
-// const deleteProfileProceed = document.querySelector("#yes-delete");
-// const deleteProfileCancel = document.querySelector("#no-delete");
-// const deleteProfileX = document.querySelector(".close-delete-profile-yesno")
 
 function deleteProfile() {
     const profileEmail = document.getElementById('profile-email').textContent;

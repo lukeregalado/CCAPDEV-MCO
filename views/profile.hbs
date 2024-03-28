@@ -1,15 +1,17 @@
 {{!Authors: Luke Regalado, Miguel Guerrero, Ilan Templa.}}
 
 <div id="pfp-container">
-    <label class="pfp-label" for="file">
+    <label class="pfp-label" for="file" onclick="pfpUploadClick()">
         <span>Change Image</span>
-        </label>
-        <input id="file" type="file"/>
+    </label>
+    <input id="pfpFileInput" type="file" name="photo" onchange="uploadProfilePicture(this.files[0])"/>
     <img id="profile-picture" alt="Profile Picture" src="{{userData.pfpURL}}">
 </div>
 
 <div class="profile-details">
+    {{#if owner}}
     <img src="/images/icons/edit.png" class="edit-profile" alt="EDIT/DISKETTE Group icons created by Freepik - Flaticon" onclick="toggleEditMode()">
+    {{/if}}
 
     <h4 id="profile-name">{{userData.name}}</h4><span id="profile-email">{{userData.email}}</span>
     <hr>
@@ -41,7 +43,10 @@
     </div>
 </div>
 
+{{#if owner}}
 <button class="delete-profile" onclick="deleteProfileBtnClick()">Delete Profile</button>
+{{/if}}
+
 
 <div class="delete-profile-yesno">
     <img src="/images/icons/close.png" class="close-delete-profile-yesno" alt="CLOSE Group icons created by Freepik - Flaticon" onclick="cancelDeleteProfile()">

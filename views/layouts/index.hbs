@@ -41,7 +41,11 @@
  
         <div class="main-content">
             <div class="header">
+                {{#if loggedin}}
+                <button class="logout" onclick="logoutUser()">LOGOUT</button>
+                {{else}}
                 <button class="login-popup">LOGIN</button>
+                {{/if}}
             </div>
 
             <div class="wrap">
@@ -49,7 +53,7 @@
 
                 <div class="login-form login">
                     <h3>Login Portal</h3>
-                        <form action="#">
+                        <form action="#" id="login-form">
                             <div class="input-field">
                                 <input type="email" placeholder="" id="login-email" required>
                                 <label>Email</label>
@@ -60,6 +64,11 @@
                                 <input type="password" placeholder="" id="login-pw" required>
                                 <label>Password</label>
                                 <img src="/images/icons/padlock.png" alt="PADLOCK Group icons created by Freepik - Flaticon">
+                            </div>
+
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember-me" name="remember-me">
+                                <label for="remember-me">Remember Me</label>
                             </div>
 
                             <button type="submit" class="btn">Login</button>
