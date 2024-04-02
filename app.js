@@ -368,6 +368,38 @@ server.get('/vsa', async function(req, res){
    })
 });
 
+server.get('/vsa/available', async function(req, res){
+   mongoose.connection.collection('reservations')
+   .find()
+   .toArray()
+   .then(seats => {
+      const seatArray = seats.flatMap(reservation => {
+         return Object.keys(reservation).map(key => {
+            if (key !== '_id' && reservation[key].availability === true) {
+               return {
+                  id: reservation[key].id,
+                  availability: reservation[key].availability,
+                  room: reservation[key].room,
+                  Reservee: reservation[key].Reservee,
+                  br: reservation[key].br
+               };
+            }
+         });
+      }).filter(reservation => reservation);
+
+      console.log(seatArray);
+
+      res.render('vsa', {
+         layout: 'index',
+         seatArray: seatArray
+      });
+   })
+   .catch(error => {
+      console.error(error);
+      res.status(500).json({error: 'Couldnt fetch.'});
+   })
+});
+
 
 server.get('/reserveslot', function(req, res){
    res.render('reserveslot', {layout : 'index', seatsMap : seatsMap});
