@@ -9,11 +9,11 @@
             <th>Status</th>
             <th>Reservee</th>
         </tr>
-        {{#each seatsMap}}
+        {{#each seatArray}}
          <tr>
-            <td>{{@key}}</td>
-            <td>{{this.class}}</td>
-            <td>None</td>
+            <td>{{this.id}}</td>
+            <td>{{this.availability}}</td>
+            <td>{{this.Reservee}}</td>
         </tr>
         {{/each}}
     </table>

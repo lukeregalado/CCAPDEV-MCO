@@ -17,6 +17,8 @@ server.use(cookieParser());
 server.use(express.urlencoded({ extended: true}));
 
 const handlebars = require('express-handlebars');
+const { isInt32Array } = require('util/types');
+const { getEnabledCategories } = require('trace_events');
 server.set('view engine', 'hbs');
 server.engine('hbs', handlebars.engine({
    extname: 'hbs'
@@ -55,32 +57,6 @@ server.post('/uploadProfilePicture', upload.single('photo'), async (req, res) =>
    res.sendStatus(200); 
 });
 
-// server.post('/edit-profile', async (req, res) => {
-//    try {
-//       const userEmail = req.body.email;
-//       const username = req.body.name;
-//       const userDesc = req.body.description;
-
-//       const updatedUser = await userList.findOneAndUpdate(
-//          { email: userEmail }, // find by email
-//          { name: username, description: userDesc }, // update username and desc
-//          { new: true } // return updated document
-//       );
-
-//       if (updatedUser) {
-//          console.log(`User with email ${userEmail} edited successfully.`);
-//          res.status(200).send('Profile edited successfully');
-//       } else {
-//          console.log(`User with email ${userEmail} not found.`);
-//          res.status(404).send('User not found');
-//       }
-//    } catch (error) {
-//       console.error('Error editing user profile:', error);
-//       res.status(500).send('An error occurred while editing user profile');
-//    }
-// });
-
-
 /*
 <================ MONGODB ================>
 */
@@ -95,6 +71,22 @@ const userSchema = new mongoose.Schema({
 })
 
 const userList = mongoose.model("users", userSchema)
+
+
+
+/*
+<================ RESERVATIONS ================>
+*/
+
+
+
+ 
+// const reservationSchema = new mongoose.Schema({
+//    seats: {
+//        type: Map,
+//        of: seatSchema
+//    }
+// });
 
 /*
 <================ MAIN CODE ================>
@@ -332,12 +324,50 @@ async function filterUserData(inputString) {
    }
 }
 
-server.get('/vsa', function(req, res){
-   res.render('vsa', {
-      layout : 'index',
-      seatsMap: seatsMap});
-   console.log(seatsMap);
+const seatSchema = new mongoose.Schema({
+   availability: { type: Boolean, default: true },
+   room: String,
+   id: String,
+   Reservee: { type: String, default: 'None' },
+   br: Boolean
 });
+
+//Model Definition
+const seatModel = mongoose.model("reservations", seatSchema)
+
+
+server.get('/vsa', async function(req, res){
+   mongoose.connection.collection('reservations')
+   .find()
+   .toArray()
+   .then(seats => {
+      const seatArray = seats.flatMap(reservation => {
+         return Object.keys(reservation).map(key => {
+            if (key !== '_id') {
+               return {
+                  id: reservation[key].id,
+                  availability: reservation[key].availability,
+                  room: reservation[key].room,
+                  Reservee: reservation[key].Reservee,
+                  br: reservation[key].br
+               };
+            }
+         });
+      }).filter(reservation => reservation);
+
+      console.log(seatArray);
+
+      res.render('vsa', {
+         layout: 'index',
+         seatArray: seatArray
+      });
+   })
+   .catch(error => {
+      console.error(error);
+      res.status(500).json({error: 'Couldnt fetch.'});
+   })
+});
+
 
 server.get('/reserveslot', function(req, res){
    res.render('reserveslot', {layout : 'index', seatsMap : seatsMap});
@@ -358,233 +388,6 @@ let reservations = [
    { room: "Room GK502", day: "Wednesday", time: "2:00 PM - 4:00 PM" }
 ];
 
-let seatsMap = {
-   "s1": {
-      class: "seat",
-      id: "s1",
-      br: false
-   },
-   "s2": {
-      class: "seat",
-      id: "s2",
-      br: false
-   },
-   "s3": {
-      class: "seat booked",
-      id: "s3",
-      br: true
-   },
-   "s4": {
-      class: "seat booked",
-      id: "s4",
-      br: false
-   },
-   "s5": {
-      class: "seat booked",
-      id: "s5",
-      br: false
-   },
-   "s6": {
-      class: "seat",
-      id: "s6",
-      br: true
-   },
-   "s7": {
-      class: "seat booked",
-      id: "s7",
-      br: false
-   },
-   "s8": {
-      class: "seat",
-      id: "s8",
-      br: false
-   },
-   "s9": {
-      class: "seat",
-      id: "s9",
-      br: false
-   },
-   "s10": {
-      class: "seat",
-      id: "s10",
-      br: false
-   },
-   "s11": {
-      class: "seat booked",
-      id: "s11",
-      br: false
-   },
-   "s12": {
-      class: "seat",
-      id: "s12",
-      br: true
-   },
-   "s13": {
-      class: "seat booked",
-      id: "s13",
-      br: false
-   },
-   "s14": {
-      class: "seat booked",
-      id: "s14",
-      br: false
-   },
-   "s15": {
-      class: "seat",
-      id: "s15",
-      br: true
-   },
-   "s16": {
-      class: "seat",
-      id: "s16",
-      br: false
-   },
-   "s17": {
-      class: "seat",
-      id: "s17",
-      br: false
-   },
-   "s18": {
-      class: "seat booked",
-      id: "s18",
-      br: false
-   },
-   "s19": {
-      class: "seat booked",
-      id: "s19",
-      br: false
-   },
-   "s20": {
-      class: "seat",
-      id: "s20",
-      br: false
-   },
-   "s21": {
-      class: "seat",
-      id: "s21",
-      br: true
-   },
-   "s22": {
-      class: "seat",
-      id: "s22",
-      br: false
-   },
-   "s23": {
-      class: "seat",
-      id: "s23",
-      br: false
-   },
-   "s24": {
-      class: "seat booked",
-      id: "s24",
-      br: true
-   },
-   "s25": {
-      class: "seat booked",
-      id: "s25",
-      br: false
-   },
-   "s26": {
-      class: "seat booked",
-      id: "s26",
-      br: false
-   },
-   "s27": {
-      class: "seat booked",
-      id: "s27",
-      br: false
-   },
-   "s28": {
-      class: "seat booked",
-      id: "s28",
-      br: false
-   },
-   "s29": {
-      class: "seat",
-      id: "s29",
-      br: false
-   },
-   "s30": {
-      class: "seat",
-      id: "s30",
-      br: true
-   },
-   "s31": {
-      class: "seat",
-      id: "s31",
-      br: false
-   },
-   "s32": {
-      class: "seat",
-      id: "s32",
-      br: false
-   },
-   "s33": {
-      class: "seat",
-      id: "s33",
-      br: true
-   },
-   "s34": {
-      class: "seat",
-      id: "s34",
-      br: false
-   },
-   "s35": {
-      class: "seat",
-      id: "s35",
-      br: false
-   },
-   "s36": {
-      class: "seat",
-      id: "s36",
-      br: false
-   },
-   "s37": {
-      class: "seat booked",
-      id: "s37",
-      br: false
-   },
-   "s38": {
-      class: "seat booked",
-      id: "s38",
-      br: false
-   },
-   "s39": {
-      class: "seat",
-      id: "s39",
-      br: true
-   },
-   "s40": {
-      class: "seat",
-      id: "s40",
-      br: false
-   },
-   "s41": {
-      class: "seat",
-      id: "s41",
-      br: false
-   },
-   "s42": {
-      class: "seat",
-      id: "s42",
-      br: true
-   },
-   "s43": {
-      class: "seat booked",
-      id: "s43",
-      br: false
-   },
-   "s44": {
-      class: "seat booked",
-      id: "s44",
-      br: false
-   },
-   "s45": {
-      class: "seat",
-      id: "s45",
-      br: false
-    }
-};
 
 let reservationsOnPage = [
    {seatNum: "22", lab: "GK304B", dateAndTimeReq: "02/12/2023 09:14", dateAndTimeRes: "02/15/2023 14:30"},
