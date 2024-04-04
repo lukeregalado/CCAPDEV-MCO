@@ -402,11 +402,65 @@ server.get('/vsa/available', async function(req, res){
 
 
 server.get('/reserveslot', function(req, res){
-   res.render('reserveslot', {layout : 'index', seatsMap : seatsMap});
+   mongoose.connection.collection('reservations')
+   .find()
+   .toArray()
+   .then(seats => {
+      const seatArray = seats.flatMap(reservation => {
+         return Object.keys(reservation).map(key => {
+            if (key !== '_id') {
+               return {
+                  id: reservation[key].id,
+                  availability: reservation[key].availability,
+                  room: reservation[key].room,
+                  Reservee: reservation[key].Reservee,
+                  br: reservation[key].br
+               };
+            }
+         });
+      }).filter(reservation => reservation);
+
+      console.log(seatArray);
+
+      res.render('reserveslot', {
+         layout: 'index',
+         seatArray: seatArray
+      });
+   })
+   .catch(error => {
+      console.error(error);
+      res.status(500).json({error: 'Couldnt fetch.'});
+   })
 });
 
 server.get('/seereservation', function(req, res){
    res.render('seereservation', {layout : 'index', reservations : reservationsOnPage});
+});
+
+server.post('/reserve', async (req, res) => {
+   try {
+      const slotAvailability = req.body.availability;
+      const slotID = req.body.id;
+      const loggedInUser = req.cookies.user;
+      console.log(slotAvailability);
+
+      const reservedSlot = await seatModel.findOneAndUpdate(
+         { id: slotID }, // find by slot id
+         { availability: slotAvailability, Reservee: loggedInUser }, // update username and desc
+         { new: true } // return updated document
+      );
+
+      if (updatedUser) {
+         console.log(`User with email ${userEmail} edited successfully.`);
+         res.status(200).send('Profile edited successfully');
+      } else {
+         console.log(`User with email ${userEmail} not found.`);
+         res.status(404).send('User not found');
+      }
+   } catch (error) {
+      console.error('Error editing user profile:', error);
+      res.status(500).send('An error occurred while editing user profile');
+   }
 });
 
 /*
