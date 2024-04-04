@@ -431,36 +431,13 @@ server.get('/vsa/available', async function(req, res){
 });
 
 
-server.get('/reserveslot', function(req, res){
-   mongoose.connection.collection('reservations')
-   .find()
-   .toArray()
-   .then(seats => {
-      const seatArray = seats.flatMap(reservation => {
-         return Object.keys(reservation).map(key => {
-            if (key !== '_id') {
-               return {
-                  id: reservation[key].id,
-                  availability: reservation[key].availability,
-                  room: reservation[key].room,
-                  Reservee: reservation[key].Reservee,
-                  br: reservation[key].br
-               };
-            }
-         });
-      }).filter(reservation => reservation);
-
-      console.log(seatArray);
-
+server.get('/reserveslot', async function(req, res){
+      const seatReservations = await seatModel.find({}).lean()
       res.render('reserveslot', {
          layout: 'index',
-         seatArray: seatArray
+         seatArray: seatReservations
       });
-   })
-   .catch(error => {
-      console.error(error);
-      res.status(500).json({error: 'Couldnt fetch.'});
-   })
+
 });
 
 server.get('/seereservation', function(req, res){
@@ -469,26 +446,19 @@ server.get('/seereservation', function(req, res){
 
 server.post('/reserve', async (req, res) => {
    try {
-      const slotAvailability = req.body.availability;
-      const slotID = req.body.id;
+      const slotAvailability = req.body.Availability;
+      const slot = req.body.Slot;
       const loggedInUser = req.cookies.user;
-      console.log(slotAvailability);
+      console.log(slot);
+      console.log(loggedInUser);
 
       const reservedSlot = await seatModel.findOneAndUpdate(
-         { id: slotID }, // find by slot id
-         { availability: slotAvailability, Reservee: loggedInUser }, // update username and desc
+         { Slot: slot }, // find by slot id
+         { Availability: slotAvailability, Reservee: loggedInUser }, // update username and desc
          { new: true } // return updated document
       );
-
-      if (updatedUser) {
-         console.log('User with email ${userEmail} edited successfully.');
-         res.status(200).send('Profile edited successfully');
-      } else {
-         console.log('User with email ${userEmail} not found.');
-         res.status(404).send('User not found');
-      }
    } catch (error) {
-      console.error('Error editing user profile:', error);
+      console.error('Error reserving:', error);
       res.status(500).send('An error occurred while editing user profile');
    }
 });

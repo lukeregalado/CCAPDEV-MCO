@@ -2,7 +2,7 @@
 function reserveSlot(){
     // Get the selected radio button
     const selectedSlot = document.querySelector('input[name="slot"]:checked');
-    console.log(selectedSlot);  
+    console.log("Slot: ", selectedSlot.id);  
     if (selectedSlot) {
         // Do something with the selected slot if needed
          fetch('/reserve', {
@@ -11,19 +11,19 @@ function reserveSlot(){
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 
-                availability: false,
-                id: selectedSlot
+                Availability: false,
+                Slot: selectedSlot.id
                 }) 
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to edit profile');
+                throw new Error('Failed to reserve');
             }
             // action after editing
             viewPage('');
         })
         .catch(error => {
-            console.error('Error editing profile:', error);
+            console.error('Error reserving:', error);
         });
         // Refresh the page
             location.reload();
