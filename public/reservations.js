@@ -1,3 +1,4 @@
+
 function reserveSlot(){
     // Get the selected radio button
     const selectedSlot = document.querySelector('input[name="slot"]:checked');

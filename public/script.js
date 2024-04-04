@@ -175,3 +175,8 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 function viewPage(page) {
     window.location.href = "/" + page;
 }
+
+
+
+
+

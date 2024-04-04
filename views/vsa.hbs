@@ -6,14 +6,14 @@
     <table id="seatTable">
         <tr>
             <th>Seat</th>
-            <th>Available</th>
+            <th>Status</th>
             <th>Reservee</th>
         </tr>
-        {{#each seatArray}}
+        {{#each seatsMap}}
          <tr>
-            <td>{{this.id}}</td>
-            <td>{{this.availability}}</td>
-            <td>{{this.Reservee}}</td>
+            <td>{{@key}}</td>
+            <td>{{this.class}}</td>
+            <td>None</td>
         </tr>
         {{/each}}
     </table>

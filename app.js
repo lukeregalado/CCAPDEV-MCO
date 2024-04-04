@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const server = express();
 const multer = require('multer');
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const port = process.env.port | 3000;
 
@@ -17,8 +18,6 @@ server.use(cookieParser());
 server.use(express.urlencoded({ extended: true}));
 
 const handlebars = require('express-handlebars');
-const { isInt32Array } = require('util/types');
-const { getEnabledCategories } = require('trace_events');
 server.set('view engine', 'hbs');
 server.engine('hbs', handlebars.engine({
    extname: 'hbs'
@@ -56,6 +55,32 @@ server.post('/uploadProfilePicture', upload.single('photo'), async (req, res) =>
 
    res.sendStatus(200); 
 });
+
+// server.post('/edit-profile', async (req, res) => {
+//    try {
+//       const userEmail = req.body.email;
+//       const username = req.body.name;
+//       const userDesc = req.body.description;
+
+//       const updatedUser = await userList.findOneAndUpdate(
+//          { email: userEmail }, // find by email
+//          { name: username, description: userDesc }, // update username and desc
+//          { new: true } // return updated document
+//       );
+
+//       if (updatedUser) {
+//          console.log(`User with email ${userEmail} edited successfully.`);
+//          res.status(200).send('Profile edited successfully');
+//       } else {
+//          console.log(`User with email ${userEmail} not found.`);
+//          res.status(404).send('User not found');
+//       }
+//    } catch (error) {
+//       console.error('Error editing user profile:', error);
+//       res.status(500).send('An error occurred while editing user profile');
+//    }
+// });
+
 
 /*
 <================ MONGODB ================>
@@ -110,10 +135,12 @@ server.post('/register', async (req, res) => {
       return res.status(400).send('User already exists!');
    }
 
+   const hashedPassword = await bcrypt.hash(userPassword, 10); //hash pw
+
    // create new doc
    const newUser = new userList({
       name: username,
-      password: userPassword,
+      password: hashedPassword,
       pos: userPosition,
       pfpURL: "/images/sample-users/Name",
       email: username,
@@ -143,8 +170,9 @@ server.post('/login', async (req, res) => {
          return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      if (password !== user.password) {
-         // if pw is incorrect
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+         // if password is incorrect
          return res.status(401).json({ error: 'Invalid email or password' });
       }
 
@@ -261,7 +289,6 @@ server.post('/edit-profile', async (req, res) => {
 });
 
 
-
 // delete user
 server.post('/delete-profile', async (req, res) => {
    try {
@@ -283,9 +310,11 @@ server.post('/delete-profile', async (req, res) => {
 });
 
 // helper function for rendering profile page
-function renderProfilePage(req, res, suggestions, userInfo) {
+async function renderProfilePage(req, res, suggestions, userInfo) {
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
+
+   const userReservations = await filterReservationByName(userInfo.name);
    
    console.log("Rendering profile page...");
 
@@ -294,7 +323,7 @@ function renderProfilePage(req, res, suggestions, userInfo) {
       res.render('profile', { 
          layout: 'index',
          loggedin: loggedin,
-         reservations: reservations,
+         reservations: userReservations,
          suggestions: null,
          userData: userInfo,
          owner: true});
@@ -303,7 +332,7 @@ function renderProfilePage(req, res, suggestions, userInfo) {
       res.render('profile', { 
          layout: 'index',
          loggedin: loggedin,
-         reservations: reservations,
+         reservations: userReservations,
          suggestions: null,
          userData: userInfo ,
          owner: false});
@@ -325,11 +354,12 @@ async function filterUserData(inputString) {
 }
 
 const seatSchema = new mongoose.Schema({
-   availability: { type: Boolean, default: true },
-   room: String,
-   id: String,
-   Reservee: { type: String, default: 'None' },
-   br: Boolean
+   Slot: String,
+   Availability: Boolean,
+   Room: String,
+   ID: Number,
+   Reservee: String,
+   BR: Boolean
 });
 
 //Model Definition
@@ -451,10 +481,10 @@ server.post('/reserve', async (req, res) => {
       );
 
       if (updatedUser) {
-         console.log(`User with email ${userEmail} edited successfully.`);
+         console.log('User with email ${userEmail} edited successfully.');
          res.status(200).send('Profile edited successfully');
       } else {
-         console.log(`User with email ${userEmail} not found.`);
+         console.log('User with email ${userEmail} not found.');
          res.status(404).send('User not found');
       }
    } catch (error) {
