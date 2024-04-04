@@ -37,7 +37,7 @@
             </div>
 
             <div class="labPopup" id="labPopup">
-                    <form action="#">
+                    <form action='#'>
                         <div class="labPopupTitle">
                             Slots for GK304A
                         </div>
@@ -48,9 +48,13 @@
                                 <div class="status">Selected</div>
                             </div>
                             <div class="allSeats">
-                                    {{#each seatsMap}}
+                                    {{#each seatArray}}
                                         <input type="radio" name="slot" id="{{id}}">
-                                        <label for="{{id}}" class="{{class}}"></label>
+                                        {{#if availability}}
+                                            <label for="{{id}}" class="seat"></label>
+                                        {{else}}
+                                            <label for="{{id}}" class="seat booked"></label>
+                                        {{/if}}
                                         {{#if br}}
                                             <br>
                                         {{/if}}
@@ -59,8 +63,10 @@
                         </div>
 
                         <div id="reserve-button-cont">
-                            <button type="button" id="reserve-button">Reserve</button>
+                            <button type="button" id="reserve-button" onclick="reserveSlot()">Reserve</button>
                         </div>
                     </form>
                 
             </div>
+
+            <script src="/reservations.js"></script>
