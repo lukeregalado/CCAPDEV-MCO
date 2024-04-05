@@ -1,5 +1,4 @@
 //Authors: Luke Regalado, Miguel Guerrero, Ilan Templa.
-
 //Initials
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,14 +7,38 @@ const server = express();
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
-const port = process.env.port | 3000;
+const { dbURL } = require('./config');
 
+const options = { useNewUrlParser: true,
+   useUnifiedTopology: true};
+   
+mongoose.connect(dbURL, options)
+
+
+const { envPort, sessionKey } = require('./config');
+const port = envPort || 3000;
 
 const bodyParser = require('body-parser');
 server.use(express.json()); 
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: true}));
+
+let store = new MongoStore({
+   mongoUrl: dbURL,
+   collection: "sessions"
+});
+
+server.use(session({
+   secret: sessionKey, // secret
+   store: store, // store session
+   resave: false,
+   saveUninitialized: true,
+   cookie: { secure: true } // Adjust as needed, set to true if using HTTPS
+}));
+
 
 const handlebars = require('express-handlebars');
 server.set('view engine', 'hbs');
@@ -25,6 +48,21 @@ server.engine('hbs', handlebars.engine({
 
 server.use(express.static(path.join(__dirname, 'public')));
 
+/*
+<================ MONGODB ================>
+*/
+// mongoose.connect('mongodb://localhost:27017/MCOdb')
+// mongoose.connect('mongodb+srv://lukemregalado:tEtSu1x55FwUqlrh@ccapdev-s16-grp6.ranpse9.mongodb.net/?retryWrites=true&w=majority&appName=MCOdb')
+const userSchema = new mongoose.Schema({
+   name: String,
+   password: String,
+   pos: String,
+   pfpURL: String,
+   email: String,
+   description: String
+})
+
+const userList = mongoose.model("users", userSchema)
 
 /*
 <================ multer (file uploads) ================>
@@ -56,46 +94,6 @@ server.post('/uploadProfilePicture', upload.single('photo'), async (req, res) =>
    res.sendStatus(200); 
 });
 
-// server.post('/edit-profile', async (req, res) => {
-//    try {
-//       const userEmail = req.body.email;
-//       const username = req.body.name;
-//       const userDesc = req.body.description;
-
-//       const updatedUser = await userList.findOneAndUpdate(
-//          { email: userEmail }, // find by email
-//          { name: username, description: userDesc }, // update username and desc
-//          { new: true } // return updated document
-//       );
-
-//       if (updatedUser) {
-//          console.log(`User with email ${userEmail} edited successfully.`);
-//          res.status(200).send('Profile edited successfully');
-//       } else {
-//          console.log(`User with email ${userEmail} not found.`);
-//          res.status(404).send('User not found');
-//       }
-//    } catch (error) {
-//       console.error('Error editing user profile:', error);
-//       res.status(500).send('An error occurred while editing user profile');
-//    }
-// });
-
-
-/*
-<================ MONGODB ================>
-*/
-mongoose.connect('mongodb://localhost:27017/MCOdb')
-const userSchema = new mongoose.Schema({
-   name: String,
-   password: String,
-   pos: String,
-   pfpURL: String,
-   email: String,
-   description: String
-})
-
-const userList = mongoose.model("users", userSchema)
 
 /*
 <================ MAIN CODE ================>
@@ -540,4 +538,6 @@ let reservationsOnPage = [
    {seatNum: "02", lab: "GK304A", dateAndTimeReq: "02/13/2023 20:43	", dateAndTimeRes: "02/15/2023 09:15"}
 ]
 
-server.listen(port);
+server.listen(port, () => {
+   console.log('Started on port ${port}');
+});
