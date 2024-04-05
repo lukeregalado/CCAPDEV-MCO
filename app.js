@@ -201,20 +201,50 @@ server.post('/logout', async (req, res) => {
 <================ PROFILE ================>
 */
 server.get('/profile', function(req, res) {
-   userList.findOne({}).lean()
-   .then(function (user) {
-      renderProfilePage(req, res, null, user);
-   })
-   .catch(function (err) {
-      console.log(err)
-   })
+   const loggedInUser = req.cookies.user;
+
+   if (loggedInUser !== undefined) {
+      // if a user is logged in
+      userList.findOne({ 
+         email: loggedInUser.trim() 
+         }).lean()
+         .then(function (user) {
+            if (user) {
+               // if found, then go to their profile
+               res.redirect(`/profile/${user.name}`);
+               
+            } else {
+               renderProfilePage(req, res, null, null);
+            }
+         })
+         .catch(function (err) {
+            console.log(err);
+            // err
+         });
+   } else {
+      // if no logged in user
+      userList.findOne({}).lean()
+         .then(function (user) {
+            if (user) {
+               res.redirect(`/profile/${user.name}`);
+
+            } else {
+               // if userlist is empty
+               renderProfilePage(req, res, null, null);
+            }
+         })
+         .catch(function (err) {
+            console.log(err);
+            // err
+         });
+   }
 });
+
 
 // search user
 server.get('/profile/:username', (req, res) => {
    const username = req.params.username;
    const loggedInUser = req.cookies.user;
-   const loginBool = loggedInUser !== null;
    
    console.log('Redirecting to ', username, '\'s profile...');
    
@@ -295,12 +325,19 @@ server.post('/delete-profile', async (req, res) => {
 
 // helper function for rendering profile page
 async function renderProfilePage(req, res, suggestions, userInfo) {
+   if (!userInfo) {
+      // if null, send error
+      res.status(404).send("User information not found. Please try again later.");
+      return; // return, end function run
+   }
+
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
    const userReservations = await filterReservationByName(userInfo.name);
    
    console.log("Rendering profile page...");
+
 
    if (loggedInUser && loggedInUser === userInfo.email) {
       // render the profile page with the delete button visible
@@ -344,10 +381,10 @@ async function filterReservationByName(name) {
 
       const filteredReservations = await seatModel.find({
          Reservee: { $regex: regex } //search db with Reservee: name
-     }).select('Room Slot').lean(); //select necessary fields to display
+     }).select('Room Slot DateTimeRes').lean(); //select necessary fields to display
 
       return filteredReservations;
-   } catch (error) {
+   } catch (error) { 
       console.error('Error filtering reservations by name:', error);
       throw error;
    }
@@ -369,6 +406,9 @@ const seatModel = mongoose.model("reservations", seatSchema)
 
 
 server.get('/vsa', async function(req, res){
+   const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+
    mongoose.connection.collection('reservations')
    .find()
    .toArray()
@@ -391,7 +431,8 @@ server.get('/vsa', async function(req, res){
 
       res.render('vsa', {
          layout: 'index',
-         seatArray: seatArray
+         seatArray: seatArray,
+         loggedin: loggedin
       });
    })
    .catch(error => {
@@ -401,6 +442,9 @@ server.get('/vsa', async function(req, res){
 });
 
 server.get('/vsa/available', async function(req, res){
+   const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+
    mongoose.connection.collection('reservations')
    .find()
    .toArray()
@@ -423,7 +467,8 @@ server.get('/vsa/available', async function(req, res){
 
       res.render('vsa', {
          layout: 'index',
-         seatArray: seatArray
+         seatArray: seatArray,
+         loggedin: loggedin
       });
    })
    .catch(error => {
@@ -434,81 +479,41 @@ server.get('/vsa/available', async function(req, res){
 
 
 server.get('/reserveslot', async function(req, res){
-      const seatReservations = await seatModel.find({}).lean()
-      res.render('reserveslot', {
-         layout: 'index',
-         seatArray: seatReservations
-      });
+   const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+
+   const seatReservations = await seatModel.find({}).lean()
+   res.render('reserveslot', {
+      layout: 'index',
+      seatArray: seatReservations,
+      loggedin: loggedin
+   });
 
 });
 
 server.get('/seereservation', async function(req, res){
    const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+
    const seatReservations = await seatModel.find({Reservee: loggedInUser}).lean()
-   res.render('seereservation', {layout : 'index', reservations : seatReservations});
+   res.render('seereservation', {
+      layout : 'index', 
+      reservations : seatReservations,
+      loggedin: loggedin});
 });
 
 server.post('/reserve', async (req, res) => {
    try {
       const slotAvailability = req.body.Availability;
       const slot = req.body.Slot;
+      const dateOfReservation = req.body.DateTimeRes;
+      const currDate = req.body.DateTimeReq;
       const loggedInUser = req.cookies.user;
-      const currentdate = new Date(); 
-      switch(currentdate.getDate()){
-         case 1:
-         case 2:
-         case 3:
-         case 4:
-         case 5:
-         case 6:
-         case 7:
-         case 8:
-         case 9:
-            datetime = "0" + currentdate.getDate() + "/";
-            break;
-         default:
-            datetime = currentdate.getDate() + "/";
-      }
-
-      switch(currentdate.getMonth() + 1){
-         case 1:
-         case 2:
-         case 3:
-         case 4:
-         case 5:
-         case 6:
-         case 7:
-         case 8:
-         case 9:
-            datetime += "0" + (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
-            break;
-         default:
-            datetime += (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
-      }
-
-      switch(currentdate.getMinutes()){
-         case 0:
-         case 1:
-         case 2:
-         case 3:
-         case 4:
-         case 5:
-         case 6:
-         case 7:
-         case 8:
-         case 9:
-            datetime += currentdate.getHours() + ":" + "0" + currentdate.getMinutes();
-            break;
-         default:
-            datetime += currentdate.getHours() + ":" + currentdate.getMinutes();
-      }
-      console.log(slot);
-      console.log(loggedInUser);
-      console.log(datetime);
+      
 
       const reservedSlot = await seatModel.findOneAndUpdate(
          { Slot: slot }, // find by slot id
-         { Availability: slotAvailability, Reservee: loggedInUser, DateTimeReq: datetime, DateTimeRes: "05/10/2024 9:15 - 10:45"}, // update username and desc
+         { Availability: slotAvailability, Reservee: loggedInUser, DateTimeReq: currDate, DateTimeRes: dateOfReservation}, // update username and desc
          { new: true } // return updated document
       );
    } catch (error) {
