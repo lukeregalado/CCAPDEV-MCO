@@ -73,3 +73,104 @@ function getCookie(cookieName) {
     // If the cookie is not found, return null
     return null;
 }
+
+
+function filterReservations() {
+    const roomDropdown = document.getElementById('roomSlotDropdown').value;
+    const checkbox = document.querySelector('.availability').checked;
+    // date
+    const datePickerInput = document.getElementById("datePicker").value;
+    // time slot
+    const timeSlotDropdownSelect = document.querySelector("#timeSlotDropdown").value;
+    
+    console.log('Room dropdown value:', roomDropdown);
+    console.log('Checkbox checked:', checkbox);
+    console.log('Date picker value:', datePickerInput);
+    console.log('Time slot dropdown value:', timeSlotDropdownSelect);
+
+    fetch('/filterReservation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Availability: checkbox,         //filter avail
+            Date: datePickerInput,          //filter date
+            Time: timeSlotDropdownSelect,   //filter time
+            Room: roomDropdown              //filter room
+        })
+    })
+    .then(response => {
+        if (!response.ok) { //err
+            throw new Error('Failed to filter reservations');
+        }
+        return response.json(); // parse json
+    })
+    .then(filteredReservations => {
+        console.log("Reservations filtered successfully");
+        //update table
+        updateFilterReservations(filteredReservations)
+    })
+    .catch(error => {
+        console.error('Error filtering reservations:', error);
+    });
+}
+
+//helper
+function updateFilterReservations(reservations) {
+    const reservationTable = document.querySelector('#seatTable');
+
+    // clear previous reservations
+    reservationTable.innerHTML = '';
+
+    // check if reservations array is empty
+    if (!Array.isArray(reservations) || reservations.length === 0) {
+        const emptyRow = document.createElement('tr');
+        const emptyCell = document.createElement('td');
+        emptyCell.setAttribute('colspan', '4');
+        emptyCell.textContent = 'No reservations found';
+        emptyRow.appendChild(emptyCell);
+        reservationTable.appendChild(emptyRow);
+        return;
+    } else {
+        const headers = document.createElement('tr')
+
+        const seat = document.createElement('th');
+        const room = document.createElement('th');
+        const reservee = document.createElement('th');
+        const time = document.createElement('th');
+
+        headers.appendChild(seat);
+        headers.appendChild(room);
+        headers.appendChild(reservee);
+        headers.appendChild(time);
+
+        reservationTable.appendChild(headers);
+    }
+
+    // populate reservations
+    reservations.forEach(reservation => {
+        const reservationRow = document.createElement('tr');
+
+        // create cells
+        const seatNumCell = document.createElement('td');
+        seatNumCell.textContent = reservation.Slot;
+        reservationRow.appendChild(seatNumCell);
+
+        const roomCell = document.createElement('td');
+        roomCell.textContent = reservation.Room;
+        reservationRow.appendChild(roomCell);
+
+        const reserveeCell = document.createElement('td');
+        reserveeCell.textContent = reservation.Reservee;
+        reservationRow.appendChild(reserveeCell);
+
+        const dtResCell = document.createElement('td');
+        dtResCell.textContent = reservation.DateTimeRes;
+        reservationRow.appendChild(dtResCell);
+
+        // append row to table
+        reservationTable.appendChild(reservationRow);
+    });
+}
+

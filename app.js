@@ -164,9 +164,17 @@ server.post('/login', async (req, res) => {
 
       // if remember me is checked
       if (remember) {
-         res.cookie('user', user.email, { httpOnly: true, expires: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000)});
+         res.cookie('user', user.email, {
+            httpOnly: true, 
+            expires: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
+            secure: true,
+            sameSite: "none"
+         });
       } else {
-         res.cookie('user', user.email, { httpOnly: true });
+         res.cookie('user', user.email, { 
+            httpOnly: true,
+            secure: true,
+            sameSite: "none" });
       }
 
       
@@ -407,36 +415,11 @@ server.get('/vsa', async function(req, res){
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
-   mongoose.connection.collection('reservations')
-   .find()
-   .toArray()
-   .then(seats => {
-      const seatArray = seats.flatMap(reservation => {
-         return Object.keys(reservation).map(key => {
-            if (key !== '_id') {
-               return {
-                  id: reservation[key].id,
-                  availability: reservation[key].availability,
-                  room: reservation[key].room,
-                  Reservee: reservation[key].Reservee,
-                  br: reservation[key].br
-               };
-            }
-         });
-      }).filter(reservation => reservation);
-
-      console.log(seatArray);
-
-      res.render('vsa', {
-         layout: 'index',
-         seatArray: seatArray,
-         loggedin: loggedin
-      });
-   })
-   .catch(error => {
-      console.error(error);
-      res.status(500).json({error: 'Couldnt fetch.'});
-   })
+   res.render('vsa', {
+      layout: 'index',
+      loggedin: loggedin
+   });
+   
 });
 
 server.get('/vsa/available', async function(req, res){
@@ -519,6 +502,53 @@ server.post('/reserve', async (req, res) => {
       res.status(500).send('An error occurred while editing user profile');
    }
 });
+
+server.post('/filterReservation', async (req, res) => {
+   try {
+      const slotAvailability = req.body.Availability;
+      const date = req.body.Date;
+      const time = req.body.Time;
+      const room = req.body.Room;
+      
+      console.log(slotAvailability);
+      console.log(date);
+      console.log(time);
+      console.log(room);
+      
+      // date regex
+      const regexDate = new RegExp(date, "i"); // "i" flag for case-insensitive search
+      const regexTime = new RegExp(time, "i"); 
+      
+      let query = {
+         DateTimeRes: { $regex: regexDate },
+         DateTimeRes: { $regex: regexTime },
+         Room: room
+      };
+
+      // query
+      if (slotAvailability) {
+         query = {
+            Availability: true,
+            DateTimeRes: { $regex: regexDate },
+            DateTimeRes: { $regex: regexTime },
+            Room: room
+         };
+      }
+
+      console.log(query)
+      
+
+      // find
+      const filteredReservations = await seatModel.find(query).lean();
+
+      // return response
+      res.status(200).json(filteredReservations);
+   } catch (error) {
+      console.error('Error filtering reservations:', error);
+      res.status(500).json({ error: 'An error occurred while filtering reservations' });
+   }
+});
+
 
 /*
 <================ PROFILE PAGE ================>

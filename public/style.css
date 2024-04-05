@@ -815,7 +815,9 @@
 
 #appointment-pane-right {
     overflow: auto;
+    overflow-x: auto;
     position: absolute;
+    justify-content: center;
     display:flex;
 
     top: 5%;
@@ -828,10 +830,30 @@
 
     box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.5);
 
+    scrollbar-color: var(--sidepanel) transparent;
+}
+
+#appointment-pane-right::-webkit-scrollbar {
+    width: 12px;
+    height: 20px;
+}
+
+#appointment-pane-right::-webkit-scrollbar-thumb {
+    background-color: var(--sidepanel);
+    border-radius: 10px;
+}
+
+#appointment-pane-right::-webkit-scrollbar-thumb:hover {
+    background-color: #016436;
 }
 
 #seatTable {
-    border-spacing: 0px; 
+    border-spacing: 0 15 0 0; 
+    
+}
+
+#first-header {
+    border-left: 50;
     
 }
 
