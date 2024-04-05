@@ -1049,6 +1049,7 @@
 .seat.booked{
     background: rgb(180, 180, 180);
     outline: none;
+    pointer-events: none;
 }
 
 .labPopup input{

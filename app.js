@@ -359,6 +359,8 @@ const seatSchema = new mongoose.Schema({
    Room: String,
    ID: Number,
    Reservee: String,
+   DateTimeReq: String,
+   DateTimeRes: String,
    BR: Boolean
 });
 
@@ -431,36 +433,86 @@ server.get('/vsa/available', async function(req, res){
 });
 
 
-server.get('/reserveslot', function(req, res){
-   res.render('reserveslot', {layout : 'index', seatsMap : seatsMap});
+server.get('/reserveslot', async function(req, res){
+      const seatReservations = await seatModel.find({}).lean()
+      res.render('reserveslot', {
+         layout: 'index',
+         seatArray: seatReservations
+      });
+
 });
 
-server.get('/seereservation', function(req, res){
-   res.render('seereservation', {layout : 'index', reservations : reservationsOnPage});
+server.get('/seereservation', async function(req, res){
+   const loggedInUser = req.cookies.user;
+   const seatReservations = await seatModel.find({Reservee: loggedInUser}).lean()
+   res.render('seereservation', {layout : 'index', reservations : seatReservations});
 });
 
 server.post('/reserve', async (req, res) => {
    try {
-      const slotAvailability = req.body.availability;
-      const slotID = req.body.id;
+      const slotAvailability = req.body.Availability;
+      const slot = req.body.Slot;
       const loggedInUser = req.cookies.user;
-      console.log(slotAvailability);
+      const currentdate = new Date(); 
+      switch(currentdate.getDate()){
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime = "0" + currentdate.getDate() + "/";
+            break;
+         default:
+            datetime = currentdate.getDate() + "/";
+      }
+
+      switch(currentdate.getMonth() + 1){
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime += "0" + (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
+            break;
+         default:
+            datetime += (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
+      }
+
+      switch(currentdate.getMinutes()){
+         case 0:
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime += currentdate.getHours() + ":" + "0" + currentdate.getMinutes();
+            break;
+         default:
+            datetime += currentdate.getHours() + ":" + currentdate.getMinutes();
+      }
+      console.log(slot);
+      console.log(loggedInUser);
+      console.log(datetime);
 
       const reservedSlot = await seatModel.findOneAndUpdate(
-         { id: slotID }, // find by slot id
-         { availability: slotAvailability, Reservee: loggedInUser }, // update username and desc
+         { Slot: slot }, // find by slot id
+         { Availability: slotAvailability, Reservee: loggedInUser, DateTimeReq: datetime, DateTimeRes: "05/10/2024 9:15 - 10:45"}, // update username and desc
          { new: true } // return updated document
       );
-
-      if (updatedUser) {
-         console.log('User with email ${userEmail} edited successfully.');
-         res.status(200).send('Profile edited successfully');
-      } else {
-         console.log('User with email ${userEmail} not found.');
-         res.status(404).send('User not found');
-      }
    } catch (error) {
-      console.error('Error editing user profile:', error);
+      console.error('Error reserving:', error);
       res.status(500).send('An error occurred while editing user profile');
    }
 });
