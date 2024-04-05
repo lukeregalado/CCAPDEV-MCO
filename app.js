@@ -97,22 +97,6 @@ const userSchema = new mongoose.Schema({
 
 const userList = mongoose.model("users", userSchema)
 
-
-
-/*
-<================ RESERVATIONS ================>
-*/
-
-
-
- 
-// const reservationSchema = new mongoose.Schema({
-//    seats: {
-//        type: Map,
-//        of: seatSchema
-//    }
-// });
-
 /*
 <================ MAIN CODE ================>
 */
@@ -353,12 +337,30 @@ async function filterUserData(inputString) {
    }
 }
 
+//helper function for profile reservations
+async function filterReservationByName(name) {
+   try {
+      const regex = new RegExp(name, 'i'); 
+
+      const filteredReservations = await seatModel.find({
+         Reservee: { $regex: regex } //search db with Reservee: name
+     }).select('Room Slot').lean(); //select necessary fields to display
+
+      return filteredReservations;
+   } catch (error) {
+      console.error('Error filtering reservations by name:', error);
+      throw error;
+   }
+}
+
 const seatSchema = new mongoose.Schema({
    Slot: String,
    Availability: Boolean,
    Room: String,
    ID: Number,
    Reservee: String,
+   DateTimeReq: String,
+   DateTimeRes: String,
    BR: Boolean
 });
 
@@ -440,8 +442,10 @@ server.get('/reserveslot', async function(req, res){
 
 });
 
-server.get('/seereservation', function(req, res){
-   res.render('seereservation', {layout : 'index', reservations : reservationsOnPage});
+server.get('/seereservation', async function(req, res){
+   const loggedInUser = req.cookies.user;
+   const seatReservations = await seatModel.find({Reservee: loggedInUser}).lean()
+   res.render('seereservation', {layout : 'index', reservations : seatReservations});
 });
 
 server.post('/reserve', async (req, res) => {
@@ -449,12 +453,62 @@ server.post('/reserve', async (req, res) => {
       const slotAvailability = req.body.Availability;
       const slot = req.body.Slot;
       const loggedInUser = req.cookies.user;
+      const currentdate = new Date(); 
+      switch(currentdate.getDate()){
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime = "0" + currentdate.getDate() + "/";
+            break;
+         default:
+            datetime = currentdate.getDate() + "/";
+      }
+
+      switch(currentdate.getMonth() + 1){
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime += "0" + (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
+            break;
+         default:
+            datetime += (currentdate.getMonth()+1) + "/" + currentdate.getFullYear() + " ";
+      }
+
+      switch(currentdate.getMinutes()){
+         case 0:
+         case 1:
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         case 6:
+         case 7:
+         case 8:
+         case 9:
+            datetime += currentdate.getHours() + ":" + "0" + currentdate.getMinutes();
+            break;
+         default:
+            datetime += currentdate.getHours() + ":" + currentdate.getMinutes();
+      }
       console.log(slot);
       console.log(loggedInUser);
+      console.log(datetime);
 
       const reservedSlot = await seatModel.findOneAndUpdate(
          { Slot: slot }, // find by slot id
-         { Availability: slotAvailability, Reservee: loggedInUser }, // update username and desc
+         { Availability: slotAvailability, Reservee: loggedInUser, DateTimeReq: datetime, DateTimeRes: "05/10/2024 9:15 - 10:45"}, // update username and desc
          { new: true } // return updated document
       );
    } catch (error) {
