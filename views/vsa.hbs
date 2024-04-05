@@ -4,20 +4,20 @@
 
 <div id="appointment-pane-right">
     <table id="seatTable">
-        <tr>
-            <th>Seat</th>
-            <th>Reservee</th>
-            <th>Schedule</th>
-        </tr>
-        {{#each reservations}}
+        <thead>
             <tr>
-                <td>{{this.Room}} {{this.Slot}}</td>
-                <td>{{this.Reservee}}</td>
-                <td>{{this.DateTimeRes}}</td>
+                <th>Seat</th>
+                <th>Room</th>
+                <th>Reservee</th>
+                <th>Schedule</th>
             </tr>
-        {{/each}}
+        </thead>
+        <tbody>
+            {{!-- populated by js --}}
+        </tbody>
     </table>
 </div>
+
 
 
 <input  type ="checkbox" 
@@ -34,7 +34,8 @@
         class = "apptIcon">
         <p class = "appOptLabel">Room:</p>
         <select id = "roomSlotDropdown"
-                class = "apptOption" onchange="filterReservations()">
+                class = "apptOption" onclick="filterReservations()">
+            <option value="any" selected>Any</option>
             <option value="GK101">Room GK101</option>
             <option value="GK202">Room GK202</option>
             <option value="GK302">Room GK302</option>
@@ -56,7 +57,7 @@
         <p class = "appOptLabel">Time:</p>
         <select id="timeSlotDropdown"
                 class = "apptOption" onchange="filterReservations()">
-            <option value="none">Any</option>
+            <option value="" selected>Any</option>
             <option value="9:15 - 10:45">9:15 - 10:45</option>
             <option value="11:00 - 12:30">11:00 - 12:30</option>
             <option value="12:45 - 14:15">12:45 - 14:15</option>

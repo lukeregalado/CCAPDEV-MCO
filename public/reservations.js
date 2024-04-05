@@ -118,7 +118,7 @@ function filterReservations() {
 
 //helper
 function updateFilterReservations(reservations) {
-    const reservationTable = document.querySelector('#seatTable');
+    const reservationTable = document.querySelector('#seatTable tbody');
 
     // clear previous reservations
     reservationTable.innerHTML = '';
@@ -132,21 +132,7 @@ function updateFilterReservations(reservations) {
         emptyRow.appendChild(emptyCell);
         reservationTable.appendChild(emptyRow);
         return;
-    } else {
-        const headers = document.createElement('tr')
-
-        const seat = document.createElement('th');
-        const room = document.createElement('th');
-        const reservee = document.createElement('th');
-        const time = document.createElement('th');
-
-        headers.appendChild(seat);
-        headers.appendChild(room);
-        headers.appendChild(reservee);
-        headers.appendChild(time);
-
-        reservationTable.appendChild(headers);
-    }
+    } 
 
     // populate reservations
     reservations.forEach(reservation => {

@@ -509,37 +509,41 @@ server.post('/filterReservation', async (req, res) => {
       const date = req.body.Date;
       const time = req.body.Time;
       const room = req.body.Room;
+
+      const parts = date.split('-');
+      const year = parts[0];
+      const month = parts[1];
+      const day = parts[2];
+
+      // rearrange date
+      const rearrangedDate = `${month}/${day}/${year}`;
+      const dateTimeString = `${rearrangedDate} ${time}`;
       
-      console.log(slotAvailability);
-      console.log(date);
-      console.log(time);
-      console.log(room);
-      
-      // date regex
-      const regexDate = new RegExp(date, "i"); // "i" flag for case-insensitive search
-      const regexTime = new RegExp(time, "i"); 
-      
-      let query = {
-         DateTimeRes: { $regex: regexDate },
-         DateTimeRes: { $regex: regexTime },
-         Room: room
-      };
+      // datetime regex
+      const regexDate = new RegExp(dateTimeString, "i"); // "i" flag for case-insensitive search
 
       // query
-      if (slotAvailability) {
-         query = {
-            Availability: true,
-            DateTimeRes: { $regex: regexDate },
-            DateTimeRes: { $regex: regexTime },
-            Room: room
-         };
-      }
+      let query = {
+         DateTimeRes: { $regex: regexDate },
+         Reservee: { $regex: "" },
+      };
 
-      console.log(query)
+      // if ()
+
+      
+      if (slotAvailability) {
+         query.Availability = true;
+      }
+      if (room != "any") {
+         query.Room = room;
+      } 
+      console.log("QUERY: ", query)
       
 
       // find
       const filteredReservations = await seatModel.find(query).lean();
+
+      console.log("LIST: ",filteredReservations)
 
       // return response
       res.status(200).json(filteredReservations);
