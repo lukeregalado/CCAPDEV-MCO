@@ -1,0 +1,55 @@
+[{
+  "_id": {
+    "$oid": "66055555f26ef07a0404f8b3"
+  },
+  "name": "Yoo Jeong-yeon",
+  "password": "$2a$10$kwTdhMH1wh0.7AQOCA5iLuIIYZpkfSoLjuHyomg2BIueFENNOIZW6",
+  "pos": "student",
+  "pfpURL": "/images/sample-users/Yoo Jeong-yeon",
+  "email": "yoo_jeongyeon@dlsu.edu.ph",
+  "description": "Lab Technician at a certain DLSU Lab. Main vocalist of TWICE."
+},
+{
+  "_id": {
+    "$oid": "66055980f26ef07a0404f8b5"
+  },
+  "name": "Hirai Momo",
+  "password": "$2a$10$kwTdhMH1wh0.7AQOCA5iLuIIYZpkfSoLjuHyomg2BIueFENNOIZW6",
+  "pos": "student",
+  "pfpURL": "/images/sample-users/Hirai Momo",
+  "email": "hirai_momo@dlsu.edu.ph",
+  "description": "Lab Technician at a certain DLSU Lab. Main dancer of TWICE."
+},
+{
+  "_id": {
+    "$oid": "6605598ef26ef07a0404f8b7"
+  },
+  "name": "Minatozaki Sana",
+  "password": "$2a$10$kwTdhMH1wh0.7AQOCA5iLuIIYZpkfSoLjuHyomg2BIueFENNOIZW6",
+  "pos": "student",
+  "pfpURL": "/images/sample-users/Minatozaki Sana",
+  "email": "minatozaki_sana@dlsu.edu.ph",
+  "description": "Lab Technician at a certain DLSU Lab. Lead vocalist of TWICE."
+},
+{
+  "_id": {
+    "$oid": "660559aef26ef07a0404f8b9"
+  },
+  "name": "Park Ji-hyo",
+  "password": "$2a$10$kwTdhMH1wh0.7AQOCA5iLuIIYZpkfSoLjuHyomg2BIueFENNOIZW6",
+  "pos": "tech",
+  "pfpURL": "/images/sample-users/Park Ji-hyo",
+  "email": "park_jihyo@dlsu.edu.ph",
+  "description": "Student at DLSU University. Main vocalist and leader of TWICE."
+},
+{
+  "_id": {
+    "$oid": "6605553cf26ef07a0404f8b1"
+  },
+  "name": "Na-yeon Im",
+  "password": "$2a$10$kwTdhMH1wh0.7AQOCA5iLuIIYZpkfSoLjuHyomg2BIueFENNOIZW6",
+  "pos": "student",
+  "pfpURL": "/images/sample-users/Im Na-yeon",
+  "email": "im_nayeon@dlsu.edu.ph",
+  "description": "haha kalbo"
+}]
