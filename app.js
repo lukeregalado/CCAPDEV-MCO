@@ -510,14 +510,18 @@ server.post('/filterReservation', async (req, res) => {
       const time = req.body.Time;
       const room = req.body.Room;
 
-      const parts = date.split('-');
-      const year = parts[0];
-      const month = parts[1];
-      const day = parts[2];
+      let dateTimeString;
 
-      // rearrange date
-      const rearrangedDate = `${month}/${day}/${year}`;
-      const dateTimeString = `${rearrangedDate} ${time}`;
+      if (date) {
+         const parts = date.split('-');
+         const year = parts[0];
+         const month = parts[1];
+         const day = parts[2];
+
+         // rearrange date
+         const rearrangedDate = `${month}/${day}/${year}`;
+         dateTimeString = `${rearrangedDate} ${time}`;
+      }
       
       // datetime regex
       const regexDate = new RegExp(dateTimeString, "i"); // "i" flag for case-insensitive search

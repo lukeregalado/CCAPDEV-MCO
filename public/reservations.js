@@ -83,6 +83,7 @@ function filterReservations() {
     // time slot
     const timeSlotDropdownSelect = document.querySelector("#timeSlotDropdown").value;
     
+    
     console.log('Room dropdown value:', roomDropdown);
     console.log('Checkbox checked:', checkbox);
     console.log('Date picker value:', datePickerInput);
@@ -115,6 +116,11 @@ function filterReservations() {
         console.error('Error filtering reservations:', error);
     });
 }
+
+//runs when page is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    filterReservations();
+});
 
 //helper
 function updateFilterReservations(reservations) {
