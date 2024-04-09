@@ -1105,13 +1105,20 @@
     height: 50px;
 }
 
-#reserve-button-cont{
-    align-items: center;
-    justify-content: center;
-    padding-left: 300px;
+.btn-cont {
+    display: flex;
 }
 
-#reserve-button{
+#reserve-button-cont,
+#edit-button-cont {
+    align-items: center;
+    justify-content: center;
+    padding-left: 200px;
+    margin-right: 10px;
+}
+
+#reserve-button,
+#edit-button {
     height: 50px;
     width: 100px;
     background-color: #004225;
@@ -1122,7 +1129,8 @@
     cursor: pointer;
 }
 
-#reserve-button:hover{
+#reserve-button:hover,
+#edit-button:hover {
     background-color: #00703C;
 }
 

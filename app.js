@@ -472,6 +472,19 @@ server.get('/reserveslot', async function(req, res){
 
 });
 
+server.get('/editslot', async function(req, res){
+   const loggedInUser = req.cookies.user;
+   const loggedin = loggedInUser !== undefined;
+
+   const seatReservations = await seatModel.find({}).lean()
+   res.render('editslot', {
+      layout: 'index',
+      seatArray: seatReservations,
+      loggedin: loggedin
+   });
+
+});
+
 server.get('/seereservation', async function(req, res){
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;

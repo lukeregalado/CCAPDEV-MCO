@@ -1,0 +1,75 @@
+{{!Authors: Luke Regalado, Miguel Guerrero, Ilan Templa.}}
+
+            <div id ="appointment-pane-left">
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\computer.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Room:</p>
+                    <select id = "roomSlotDropdown"
+                            class = "apptOption">
+                        <option value="Room GK101">Room GK101</option>
+                        <option value="Room GK202">Room GK202</option>
+                        <option value="Room GK302">Room GK302</option>
+                        <option value="Room GK304A">Room GK304A</option>
+                    </select>
+                </div>
+                <div class = apptOptionContainer>
+                    <img src = "images\icons\calendar.png" class = "apptIcon">
+                    <p class = "appOptLabel">Date:</p>
+                    <input type = "date"
+                        id = "datePicker"
+                        class = "apptOption">
+                </div>
+                <div class = apptOptionContainer>
+                    <img    src = "images\icons\clock.png"
+                    class = "apptIcon">
+                    <p class = "appOptLabel">Time:</p>
+                    <select id="timeSlotDropdown"
+                            class = "apptOption">
+                        <option value="9:15 - 10:45">9:15 - 10:45</option>
+                        <option value="11:00 - 12:30">11:00 - 12:30</option>
+                        <option value="12:45 - 14:15">12:45 - 14:15</option>
+                        <option value="14:30 - 16:00">14:30 - 16:00</option>
+                        <option value="16:15 - 17:45">16:15 - 17:45</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="labPopup" id="labPopup">
+                    <form action='#'>
+                        <div class="labPopupTitle">
+                            Slots for GK304A
+                        </div>
+                        <div class="seats">
+                            <div class="statusList">
+                                <div class="status">Available</div>
+                                <div class="status">Reserved</div>
+                                <div class="status">Selected</div>
+                            </div>
+                            <div class="allSeats">
+                                    {{#each seatArray}}
+                                        <input type="radio" name="slot" id="{{Slot}}">
+                                        {{#if Availability}}
+                                            <label for="{{Slot}}" class="seat"></label>
+                                        {{else}}
+                                            <label for="{{Slot}}" class="seat booked"></label>
+                                        {{/if}}
+                                        {{#if BR}}
+                                            <br>
+                                        {{/if}}
+                                    {{/each}} 
+                            </div>
+                        </div>
+
+                        <div class = "btn-cont">
+                        <div id="reserve-button-cont">
+                            <button type="button" id="reserve-button" onclick="reserveSlot()">APPLY</button>
+                        </div>
+                        <div id="edit-button-cont">
+                            <button type="button" id="edit-button" onclick="viewPage('profile')">DELETE</button>
+                        </div>
+                    </form>
+                
+            </div>
+
+ <script src="/reservations.js"></script>

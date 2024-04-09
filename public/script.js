@@ -8,6 +8,11 @@ const openLogin = document.querySelector('.login-popup');
 const logout = document.querySelector('logout');
 const closeLogin = document.querySelector('.close-login');
 
+const openEdit  = document.querySelector('.close-login');
+const closeEdit  = document.querySelector('.close-login');
+
+
+
 
 // clears all input fields
 function resetLoginRegisterFields() {

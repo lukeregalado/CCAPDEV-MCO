@@ -20,11 +20,14 @@
 
 <div class="profile-reservations">
     <h3>User Lab Reservations</h3>
+    <p>Click to Edit:</p>
     {{#each reservations}}
-    <div class="reservation-item">
-        <p><strong>Room:</strong> {{Room}}</p>
-        <p><strong>Seat:</strong> {{Slot}}</p>
-        <p><strong>Date:</strong> {{DateTimeRes}}</p>
+    <div class="reservation-item" onclick = "viewPage('editslot')">
+        <div class = "reservation-left">
+            <p><strong>Room:</strong> {{Room}}</p>
+            <p><strong>Seat:</strong> {{Slot}}</p>
+            <p><strong>Date:</strong> {{DateTimeRes}}</p>
+        </div>
     </div>
     <hr>
     {{/each}}
