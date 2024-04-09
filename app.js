@@ -463,7 +463,7 @@ server.get('/reserveslot', async function(req, res){
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
-   const seatReservations = await seatModel.find({}).lean()
+   const seatReservations = await seatModel.find({}).sort({ID: 1}).lean()
    res.render('reserveslot', {
       layout: 'index',
       seatArray: seatReservations,
