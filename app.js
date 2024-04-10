@@ -502,7 +502,7 @@ server.post('/reserve', async (req, res) => {
       const slot = req.body.Slot;
       const dateOfReservation = req.body.DateTimeRes;
       const currDate = req.body.DateTimeReq;
-      const loggedInUser = req.cookies.user;
+      const loggedInUser = req.body.user;
       
 
       const reservedSlot = await seatModel.findOneAndUpdate(

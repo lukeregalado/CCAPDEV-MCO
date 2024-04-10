@@ -1111,14 +1111,15 @@
 
 #reserve-button-cont,
 #edit-button-cont {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     padding-left: 200px;
     margin-right: 10px;
+    margin-left: 200px;
 }
 
-#reserve-button,
-#reserve-anonymous,
 #edit-button {
     height: 50px;
     width: 100px;
@@ -1130,7 +1131,28 @@
     cursor: pointer;
 }
 
+.reserve-btns {
+    height: 55px;
+    width: 120px;
+    background-color: #004225;
+    color: white;
+    border-radius: 2mm;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+#reserve-button{
+    margin-right: 100px;
+}
+
+#reserve-anonymous{
+    width: 220px;
+    margin-right: 300px;
+}
+
 #reserve-button:hover,
+#reserve-anonymous:hover,
 #edit-button:hover {
     background-color: #00703C;
 }
