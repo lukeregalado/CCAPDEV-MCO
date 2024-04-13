@@ -640,7 +640,19 @@ server.post('/delete', async (req, res) => {
       const slot = req.body.Slot;
       const room = req.body.Room;
       const edit = req.body.edit;
-      console.log(edit);
+
+      var pos;
+      await userList.findOne({email: req.cookies.user})
+         .then((docs)=>{
+         console.log("Result :",docs.pos);
+         pos = docs.pos;
+         })
+         .catch((err)=>{
+         console.log(err);
+         });;
+   
+      const isTech = pos == "tech";
+      console.log(isTech);
 
       const deletedSlot = await seatModel.findOneAndUpdate(
          { Slot: slot, Room: room, DateTimeRes: date }, // find by slot id
@@ -652,12 +664,22 @@ server.post('/delete', async (req, res) => {
       const users = await userList.find({}).lean();
 
       if(req.body.edit){
-         res.render('editslot', {
-         layout: 'index',
-         seatArray: seatReservations,  
-         users: users,
-         tech: true
-         });
+         if(isTech){
+            res.render('editslot', {
+            layout: 'index',
+            seatArray: seatReservations,  
+            users: users,
+            tech: true
+            });
+         }
+         else{
+            res.render('editslot', {
+               layout: 'index',
+               seatArray: seatReservations,  
+               users: users,
+               tech: false
+               });
+         }
       }
       
    } catch (error) {
