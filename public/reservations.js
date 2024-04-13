@@ -133,7 +133,7 @@ function getCookie(cname) {
         body: JSON.stringify({
             Availability: checkboxVal,         //filter avail
             Date: datePickerInputVal,          //filter date
-            Time: timeSlotDropdownSelect,   //filter time
+            Time: timeSlotDropdownSelectVal,   //filter time
             Room: roomDropdownVal           //filter room
         })
     })
