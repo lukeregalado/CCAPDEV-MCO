@@ -62,14 +62,27 @@
                         </div>
 
                         <div class = "btn-cont">
-                        <div id="reserve-button-cont">
-                            <button type="button" id="reserve-button" onclick="reserveSlot()">APPLY</button>
-                        </div>
-                        <div id="edit-button-cont">
-                            <button type="button" id="edit-button" onclick="viewPage('profile')">DELETE</button>
+                            <button type="button" class="reserve-btns" id="reserve-button" onclick="reserveSlot()">Reserve</button>
+                            {{#if tech}}
+                                <select name="names" id="names">
+                                    <option value="Anonymous">Anonymous</option>
+                                {{#each users}}
+                                    <option value="{{email}}">{{email}}</option>
+                                {{/each}}
+                                </select>
+                                <style>#names{margin-right: 500px;}</style>
+                            {{else}}
+                                <script>console.log(loggedInUser)</script>
+                                <select name="names" id="names">
+                                    <option value="{{loggedInUser}}">{{loggedInUser}}</option>
+                                    <option value="Anonymous">Anonymous</option>
+                                </select>
+                                <style>#names{margin-right: 500px;}</style>
+                            {{/if}}
                         </div>
                     </form>
                 
             </div>
 
  <script src="/reservations.js"></script>
+ <script src="/script.js"></script>

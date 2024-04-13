@@ -1,0 +1,19 @@
+
+
+    <div class="profile-reservations" id="deleteRes">
+    <h3>Reservations</h3>
+    <p>Click to Delete:</p>
+    {{#each seatReservations}}
+    <div class="reservation-item-delete" onclick = "deleteRes()" id="{{Slot}}={{Room}}={{DateTimeRes}}">
+        <div class = "reservation-left">
+            <p><strong>Room:</strong> {{Room}}</p>
+            <p><strong>Seat:</strong> {{Slot}}</p>
+            <p><strong>Date:</strong> {{DateTimeRes}}</p>
+            <p><strong>Reservee:</strong> {{Reservee}}</p>
+        </div>
+    </div>
+    <hr>
+    {{/each}}
+    </div>
+
+    <script src="reservations.js"></script>

@@ -606,7 +606,8 @@
     margin-bottom: 20px;
 }
 
-.reservation-item {
+.reservation-item-edit,
+.reservation-item-delete {
     margin-bottom: 15px;
     padding: 20px;
     border-radius: 20px;
@@ -614,12 +615,14 @@
     transition: .5s;
 }
 
-.reservation-item:hover {
+.reservation-item-edit:hover,
+.reservation-item-delete:hover {
     background-color: #007d43;
     box-shadow: 1px -1px 18px 1px rgba(0,0,0,0.46);
 }
 
-.reservation-item p {
+.reservation-item-edit p,
+.reservation-item-delete p {
     font-size: 20px;
     margin: 5px 0;
 }
@@ -1140,20 +1143,23 @@
     outline: none;
     border: none;
     cursor: pointer;
-}
-
-#reserve-button{
-    margin-right: 100px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 #reserve-anonymous{
-    width: 220px;
-    margin-right: 300px;
+    width: 200px;
 }
 
-#reserve-button:hover,
-#reserve-anonymous:hover,
+#del-res{
+    margin-right: 420px;
+}
+
+.reserve-btns:hover,
 #edit-button:hover {
     background-color: #00703C;
 }
 
+#deleteRes{
+    top: 100px;   
+}

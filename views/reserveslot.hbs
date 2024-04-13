@@ -63,10 +63,27 @@
 
                         <div id="reserve-button-cont">
                             <button type="button" class="reserve-btns" id="reserve-button" onclick="reserveSlot()">Reserve</button>
-                            <button type="button" class="reserve-btns" id="reserve-anonymous" onclick="reserveSlotAnonymously">Reserve Anonymously</button>
+                            {{!<button type="button" class="reserve-btns" id="reserve-anonymous" onclick="reserveSlotAnonymously()">Reserve Anonymously</button>}}
+                            {{#if tech}}
+                                <select name="names" id="names">
+                                    <option value="Anonymous">Anonymous</option>
+                                {{#each users}}
+                                    <option value="{{email}}">{{email}}</option>
+                                {{/each}}
+                                </select>
+                            <button type="button" class="reserve-btns" id="del-res" onclick="viewPage('deleteres')">Delete</button>
+                            {{else}}
+                                <script>console.log(loggedInUser)</script>
+                                <select name="names" id="names">
+                                    <option value="{{loggedInUser}}">{{loggedInUser}}</option>
+                                    <option value="Anonymous">Anonymous</option>
+                                </select>
+                                <style>#names{margin-right: 500px;}</style>
+                            {{/if}}
                         </div>
                     </form>
                 
             </div>
 
  <script src="/reservations.js"></script>
+ <script src="/script.js"></script>

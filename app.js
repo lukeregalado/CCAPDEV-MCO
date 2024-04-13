@@ -340,7 +340,7 @@ async function renderProfilePage(req, res, suggestions, userInfo) {
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
-   const userReservations = await filterReservationByName(userInfo.name);
+   const userReservations = await filterReservationByName(userInfo.email);
    
    console.log("Rendering profile page...");
 
@@ -387,7 +387,7 @@ async function filterReservationByName(name) {
 
       const filteredReservations = await seatModel.find({
          Reservee: { $regex: regex } //search db with Reservee: name
-     }).select('Room Slot DateTimeRes').lean(); //select necessary fields to display
+     }).select('Room Slot DateTimeRes DateTimeReq').lean(); //select necessary fields to display
 
       return filteredReservations;
    } catch (error) { 
@@ -463,12 +463,40 @@ server.get('/reserveslot', async function(req, res){
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
-   const seatReservations = await seatModel.find({}).sort({ID: 1}).lean()
-   res.render('reserveslot', {
+   var pos;
+   await userList.findOne({email: req.cookies.user})
+      .then((docs)=>{
+      console.log("Result :",docs.pos);
+      pos = docs.pos;
+      })
+      .catch((err)=>{
+      console.log(err);
+      });;
+
+   const isTech = pos == "tech";
+   console.log(isTech);
+
+   const seatReservations = await seatModel.find({}).sort({ID: 1}).lean();
+   const users = await userList.find({}).lean();
+   if(isTech){
+      res.render('reserveslot', {
       layout: 'index',
       seatArray: seatReservations,
-      loggedin: loggedin
-   });
+      loggedin: loggedin,
+      users: users,
+      tech: true
+      });
+   }
+
+   else{
+      res.render('reserveslot', {
+      layout: 'index',
+      seatArray: seatReservations,
+      loggedInUser: req.cookies.user,
+      loggedin: loggedin,
+      tech: false
+      });
+   }
 
 });
 
@@ -476,12 +504,38 @@ server.get('/editslot', async function(req, res){
    const loggedInUser = req.cookies.user;
    const loggedin = loggedInUser !== undefined;
 
-   const seatReservations = await seatModel.find({}).lean()
-   res.render('editslot', {
+   var pos;
+   await userList.findOne({email: req.cookies.user})
+      .then((docs)=>{
+      pos = docs.pos;
+      })
+      .catch((err)=>{
+      console.log(err);
+      });;
+
+   const isTech = pos == "tech";
+
+   const seatReservations = await seatModel.find({}).sort({ID: 1}).lean()
+   const users = await userList.find({}).lean();
+   if(isTech){
+      res.render('editslot', {
       layout: 'index',
       seatArray: seatReservations,
-      loggedin: loggedin
-   });
+      loggedin: loggedin,
+      users: users,
+      tech: true
+      });
+   }
+
+   else{
+      res.render('editslot', {
+      layout: 'index',
+      seatArray: seatReservations,
+      loggedInUser: req.cookies.user,
+      loggedin: loggedin,
+      tech: false
+      });
+   }
 
 });
 
@@ -502,12 +556,11 @@ server.post('/reserve', async (req, res) => {
       const slot = req.body.Slot;
       const dateOfReservation = req.body.DateTimeRes;
       const currDate = req.body.DateTimeReq;
-      const loggedInUser = req.body.user;
-      
+      const reservee = req.body.reservee;
 
       const reservedSlot = await seatModel.findOneAndUpdate(
          { Slot: slot }, // find by slot id
-         { Availability: slotAvailability, Reservee: loggedInUser, DateTimeReq: currDate, DateTimeRes: dateOfReservation}, // update username and desc
+         { Availability: slotAvailability, Reservee: reservee, DateTimeReq: currDate, DateTimeRes: dateOfReservation}, // update username and desc
          { new: true } // return updated document
       );
    } catch (error) {
@@ -570,6 +623,48 @@ server.post('/filterReservation', async (req, res) => {
    }
 });
 
+server.get('/deleteres', async function(req, res){
+   console.log("huh");
+   const seatReservations = await seatModel.find({Availability: false}).lean()
+   console.log(seatReservations)
+   res.render('deleteres', {
+      layout: 'index',
+      seatReservations: seatReservations
+   });
+});
+
+server.post('/delete', async (req, res) => {
+   try {
+      const slotAvailability = req.body.Availability;
+      const date = req.body.Date;
+      const slot = req.body.Slot;
+      const room = req.body.Room;
+      const edit = req.body.edit;
+      console.log(edit);
+
+      const deletedSlot = await seatModel.findOneAndUpdate(
+         { Slot: slot, Room: room, DateTimeRes: date }, // find by slot id
+         { Availability: slotAvailability, Reservee: "none", DateTimeReq: "none"}, // update username and desc
+         { new: true } // return updated document
+      );
+
+      const seatReservations = await seatModel.find({}).sort({ID: 1}).lean()
+      const users = await userList.find({}).lean();
+
+      if(req.body.edit){
+         res.render('editslot', {
+         layout: 'index',
+         seatArray: seatReservations,  
+         users: users,
+         tech: true
+         });
+      }
+      
+   } catch (error) {
+      console.error('Error deleting:', error);
+      res.status(500).json({ error: 'An error occurred while deleting' });
+   }
+});
 
 /*
 <================ PROFILE PAGE ================>

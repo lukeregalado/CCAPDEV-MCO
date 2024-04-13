@@ -22,11 +22,12 @@
     <h3>User Lab Reservations</h3>
     <p>Click to Edit:</p>
     {{#each reservations}}
-    <div class="reservation-item" onclick = "viewPage('editslot')">
+    <div class="reservation-item-edit" onclick = "" id="{{Slot}}={{Room}}={{DateTimeRes}}">
         <div class = "reservation-left">
             <p><strong>Room:</strong> {{Room}}</p>
             <p><strong>Seat:</strong> {{Slot}}</p>
             <p><strong>Date:</strong> {{DateTimeRes}}</p>
+            <p><strong>Date of Request:</strong> {{DateTimeReq}}</p>
         </div>
     </div>
     <hr>
@@ -63,3 +64,4 @@
 </div>
 
 <script src="/profile.js"></script>
+<script src="/reservations.js"></script>
