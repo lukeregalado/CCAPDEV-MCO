@@ -281,8 +281,6 @@ reservationItemsEdit.forEach(function(item){
             .catch(error => {
                 console.error('Error editing:', error);
             });
-            // Refresh the page
-                location.reload();
         }
     });
 });
